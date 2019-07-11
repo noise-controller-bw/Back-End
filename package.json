@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-		"test": "cross-env DB_ENV=testing jest --watch --verbose",
-		"start": "nodemon index.js"
-	},
-	"jest": {
-		"testEnvironment": "node"
-	},
+    "test": "cross-env DB_ENV=testing jest --watch --verbose",
+    "start": "nodemon index.js"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  },
   "repository": "https://github.com/noise-controller-bw/Back-End.git",
   "license": "MIT",
   "dependencies": {
