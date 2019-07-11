@@ -3,7 +3,7 @@
 
 ### DESCRIPTION
 
-_*PItch:*_ As a teacher, it can be hard to control the noise level in your classroom! You need an app that holds kids attention, and is sensitive to the noise level in the room to motivate them to stay quiet. While some exist, they seem to encourage kids to yell (like balls that bounce higher if you yell louder). This app will reveal unique animals (choose a theme for this app) only if it's quiet enough, keeping the kids quiet.
+_**Pitch:**_ As a teacher, it can be hard to control the noise level in your classroom! You need an app that holds kids attention, and is sensitive to the noise level in the room to motivate them to stay quiet. While some exist, they seem to encourage kids to yell (like balls that bounce higher if you yell louder). This app will reveal unique animals (choose a theme for this app) only if it's quiet enough, keeping the kids quiet.
 
 ### MVP
 
