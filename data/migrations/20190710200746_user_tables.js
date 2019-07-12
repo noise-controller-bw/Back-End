@@ -1,21 +1,27 @@
 exports.up = function(knex, Promise) {
-  return knex.schema.createTable("users", users => {
-    users
+  return knex.schema.createTable("users", tbl => {
+    tbl
       .string("id", 128)
       .primary()
       .notNullable();
-    users.string("firstname", 128).notNullable();
-    users.string("lastname", 128).notNullable();
-    users
+
+    tbl.string("firstname", 128).notNullable();
+
+    tbl.string("lastname", 128).notNullable();
+
+    tbl
       .string("username", 130)
       .notNullable()
       .unique();
-    users.string("password", 130).notNullable();
-    users
+
+    tbl.string("password", 130).notNullable();
+
+    tbl
       .string("email", 130)
       .notNullable()
       .unique();
-    users
+
+    tbl
       .string("role", 128)
       .notNullable()
       .defaultTo("teacher");
