@@ -37,7 +37,6 @@ function generateToken(user) {
 const payload = {
     subject: user.id,
     username: user.username,
-    // not sure if we need roles in there?
     roles: user.role
 };
 
