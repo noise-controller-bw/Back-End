@@ -5,6 +5,7 @@ const db = require('../data/dbConfig.js');
 const Users = require('../api/helpers/usersHelper.js');
 
 // GET
+
 describe('GET /users', () => {
     // cleanup for db
     afterEach(async () => {
@@ -45,6 +46,7 @@ describe('GET /users', () => {
 });
 
 // GET by Id
+
 describe('getUserById', () => {
     // cleanup for db
     afterEach(async () => {
@@ -86,6 +88,7 @@ describe('getUserById', () => {
 });
 
 // POST
+
 describe('addUser', () => {
     // cleanup for db
     afterEach(async () => {
@@ -157,3 +160,48 @@ describe('addUser', () => {
 // PUT
 
 // DELETE
+
+describe('deleteUser', () => {
+    // cleanup for db
+    afterEach(async () => {
+        await db('users').truncate();
+    });
+
+    it('should return 200', async () => {
+        await Users.addUser({ id: "1",
+        firstname: "Lisa",
+        lastname: "Jones",
+        username: "lijones",
+        password: "test",
+        email: "jones@gmail.com",
+        role: "teacher" });
+
+        let response = await request(server).delete('/users/1')
+        expect(response.status).toBe(200);
+    });
+
+    it('should return `The user has been deleted`', async () => {
+        await Users.addUser({ id: "1",
+        firstname: "Lisa",
+        lastname: "Jones",
+        username: "lijones",
+        password: "test",
+        email: "jones@gmail.com",
+        role: "teacher" });
+
+        let response = await request(server).delete('/users/1');
+        expect(response.body).toEqual({ message: 'The user has been deleted' });
+    });
+
+    it('should return 404 if there\'s no user with provided id', async () => {
+        
+        let response = await request(server).delete('/users/1');
+        expect(response.status).toBe(404);
+    });
+
+    it('should return "The user could not be found" if there\'s no user with provided id', async () => {
+        
+        let response = await request(server).delete('/users/1')
+        expect(response.body).toEqual({ message: 'The user could not be found' });
+    });
+});

@@ -1,4 +1,4 @@
-const { getAllUsers, getUserById, getUserByFilter, addUser } = require('../helpers');
+const { getAllUsers, getUserById, getUserByFilter, addUser, deleteUser } = require('../helpers');
 const router = require('express').Router();
 
 /*
@@ -59,7 +59,21 @@ router.get('/:id', (req, res) => {
       .catch(err => res.send(err));
 });
 
-// POST for `/users`
+/* POST
+TODO: Add middleware to ensure user is logged in
+ROUTE = '/users'
+RETURNS user object
+@user object = {
+    id: "1",
+    firstname: "Lisa",
+    lastname: "Jones",
+    username: "lijones",
+    password: "test",
+    email: "jones@gmail.com",
+    role: "teacher"
+}
+*/
+
 router.post('/', (req, res) => {
     const { firstname, lastname, username, password, email, role } = req.body;
     if (!firstname || !lastname || !username || !password || !email || !role) {
@@ -79,6 +93,20 @@ router.post('/', (req, res) => {
 // @TODO: GET route for `/users/:id/classrooms
 
 // DELETE for `/users/:id`
+router.delete('/:id', async (req, res) => {
+    try {
+        const count = await deleteUser(req.params.id.toString());
+        if (count > 0) {
+          res.status(200).json({ message: 'The user has been deleted' });
+        } else {
+          res.status(404).json({ message: 'The user could not be found' });
+        }
+      } catch (error) {
+        res.status(500).json({
+          message: 'Error removing the user', error
+        });
+      }
+});
 
 // PUT for `/users/:id`
 

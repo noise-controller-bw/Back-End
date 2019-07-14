@@ -5,7 +5,8 @@ module.exports = {
     getAllUsers,
     getUserById,
     getUserByFilter,
-    addUser
+    addUser,
+    deleteUser
 };
 
 // helpers functions
@@ -45,5 +46,10 @@ async function addUser(user) {
 // EDIT user
 
 // DELETE user
+function deleteUser(id) {
+    return db('users')
+      .where({id })
+      .del();
+  }
 
 //@TO-DO: GET all SESSIONS by userId
