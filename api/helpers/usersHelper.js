@@ -1,8 +1,8 @@
 const db = require('../../data/dbConfig.js');
 
 module.exports = {
-    //helpers exports
-    getAllUsers
+    getAllUsers,
+    getUserById
 };
 
 // helpers functions
@@ -15,6 +15,11 @@ function getAllUsers() {
 
 // GET user by ID
 // Must return user object
+function getUserById(id) {
+    return db('users')
+        .where({ id })
+        .first()
+}
 
 // GET user by FILTER
 // Must return user object

@@ -45,6 +45,45 @@ describe('GET /users', () => {
 });
 
 // GET by Id
+describe('getUserById', () => {
+    // cleanup for db
+    afterEach(async () => {
+        await db('users').truncate();
+    });
+
+    it('finds a user by id', async () => {
+        await db('users').insert([
+            { 
+                id: "1",
+                firstname: "Lisa",
+                lastname: "Jones",
+                username: "lijones",
+                password: "test",
+                email: "jones@gmail.com",
+                role: "teacher" 
+            },
+            { 
+                id: "2",
+                firstname: "Jack",
+                lastname: "Jones",
+                username: "jjones",
+                password: "test",
+                email: "jjones@gmail.com",
+                role: "teacher"
+            }
+        ]);
+
+        const user = await Users.getUserById("2");
+
+        expect(user.email).toEqual("jjones@gmail.com");
+    });
+
+    it('returns undefined of invalid id', async () => {
+        const user = await Users.getUserById("2");
+
+        expect(user).toBeUndefined();
+    });
+});
 
 // POST
 
