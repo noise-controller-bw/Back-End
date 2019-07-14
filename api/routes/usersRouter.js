@@ -1,4 +1,4 @@
-const { getAllUsers, getUserById } = require('../helpers');
+const { getAllUsers, getUserById, getUserByFilter, addUser } = require('../helpers');
 const router = require('express').Router();
 
 /*
@@ -46,6 +46,7 @@ RETURNS user object
     role: "teacher"
 }
 */
+
 router.get('/:id', (req, res) => {
     getUserById(req.params.id.toString())
       .then(user => {
@@ -58,7 +59,24 @@ router.get('/:id', (req, res) => {
       .catch(err => res.send(err));
 });
 
-// @TO-DO: GET route for `/users/:id/classrooms
+// POST for `/users`
+router.post('/', (req, res) => {
+    const { firstname, lastname, username, password, email, role } = req.body;
+    if (!firstname || !lastname || !username || !password || !email || !role) {
+      return res.status(422).json({ error: 'fill out required fields!' });
+    } else {
+      const newUser = { firstname, lastname, username, password, email, role };
+      addUser(newUser)
+        .then(users => {
+            res.status(201).json(users);
+        })
+        .catch(error => {
+            res.status(500).json(error);
+        });
+    }
+});
+
+// @TODO: GET route for `/users/:id/classrooms
 
 // DELETE for `/users/:id`
 

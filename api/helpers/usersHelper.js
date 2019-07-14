@@ -1,8 +1,11 @@
 const db = require('../../data/dbConfig.js');
+const uuid = require('uuid/v4');
 
 module.exports = {
     getAllUsers,
-    getUserById
+    getUserById,
+    getUserByFilter,
+    addUser
 };
 
 // helpers functions
@@ -23,8 +26,21 @@ function getUserById(id) {
 
 // GET user by FILTER
 // Must return user object
+function getUserByFilter(filter) {
+    return db('users').where(filter).first();
+}
 
-// ADD user
+// ADD user to the db, id is randomly created with uuid
+// returns user id (ID IS A STRING!!!)
+async function addUser(user) {
+    const newUser = { id: uuid(), ...user };
+    const id = await db('users')
+        .insert(newUser)
+        .then(res => {
+            return newUser.id;
+        });
+    return getUserById(id);
+}
 
 // EDIT user
 

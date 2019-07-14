@@ -86,7 +86,73 @@ describe('getUserById', () => {
 });
 
 // POST
+describe('addUser', () => {
+    // cleanup for db
+    afterEach(async () => {
+       await db('users').truncate();
+    });
 
+    it('should insert users into the db', async () => {
+        // await db('users').truncate();
+        await Users.addUser({ 
+            firstname: "Lisa",
+            lastname: "Jones",
+            username: "lijones",
+            password: "test",
+            email: "jones@gmail.com",
+            role: "teacher" 
+        });
+        await Users.addUser({ 
+            firstname: "Jack",
+            lastname: "Jones",
+            username: "jjones",
+            password: "test",
+            email: "jjones@gmail.com",
+            role: "teacher"
+        });
+
+        const users = await db('users');
+
+        expect(users).toHaveLength(2);
+        expect(users[0].firstname).toBe("Lisa");
+    });
+
+    it('should return a status code of 201', async () => {
+        let response = await request(server).post('/users').send({ id: "1",
+        firstname: "Lisa",
+        lastname: "Jones",
+        username: "lijones",
+        password: "test",
+        email: "jones@gmail.com",
+        role: "teacher" });
+
+        expect(response.status).toBe(201);
+    });
+
+    it('should return the new user on insert', async () => {
+        const user = await Users.addUser({ id: "1",
+        firstname: "Lisa",
+        lastname: "Jones",
+        username: "lijones",
+        password: "test",
+        email: "jones@gmail.com",
+        role: "teacher" });
+
+        expect(user).toEqual({ id: "1",
+        firstname: "Lisa",
+        lastname: "Jones",
+        username: "lijones",
+        password: "test",
+        email: "jones@gmail.com",
+        role: "teacher" });
+    });
+
+    it('should return a `422` status code if firstname, lastname, username, password, email, role fields are not included inside the body', async () => {
+        let response = await request(server).post('/users').send({ role: "teacher" });
+
+        expect(response.status).toBe(422);
+    });
+});
 
 // PUT
 
