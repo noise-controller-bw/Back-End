@@ -201,6 +201,7 @@ describe('updateUser', () => {
         });
 
         const updatedUser = {
+            id: "1",
             firstname: "Li",
             lastname: "Jo",
             username: "lijones",
@@ -210,7 +211,7 @@ describe('updateUser', () => {
         }
 
         let response = await request(server).put("/users/1").send(updatedUser);
-        expect(response.body).toEqual({ message: 'The user has been updated' });
+        expect(response.body.message).toEqual('The user has been updated');
     });
 
     it('should return 404 if there\'s no user with provided id', async () => {
@@ -276,7 +277,7 @@ describe('deleteUser', () => {
         role: "teacher" });
 
         let response = await request(server).delete('/users/1');
-        expect(response.body).toEqual({ message: 'The user has been deleted' });
+        expect(response.body.message).toEqual('The user has been deleted');
     });
 
     it('should return 404 if there\'s no user with provided id', async () => {

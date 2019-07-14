@@ -8,12 +8,12 @@ ROUTE = '/users'
 RETURNS an array of users
 @user object = {
     id: "1",
-                firstname: "Lisa",
-                lastname: "Jones",
-                username: "lijones",
-                password: "test",
-                email: "jones@gmail.com",
-                role: "teacher"
+    firstname: "Lisa",
+    lastname: "Jones",
+    username: "lijones",
+    password: "test",
+    email: "jones@gmail.com",
+    role: "teacher"
 }
 */
 
@@ -92,12 +92,24 @@ router.post('/', (req, res) => {
 
 // @TODO: GET route for `/users/:id/classrooms
 
-// DELETE for `/users/:id`
+/* 
+DELETE for `/users/:id`
+TODO: Add middleware to ensure user is logged in
+ROUTE = '/users/:id'
+RETURNS message (success or failure) and count (how many records has been deleted)
+@success_object = {
+    "message": "The user has been deleted",
+    "count": 1
+}
+@failure_object = {
+    "message": "The user could not be found"
+}
+*/
 router.delete('/:id', async (req, res) => {
     try {
         const count = await deleteUser(req.params.id.toString());
         if (count > 0) {
-          res.status(200).json({ message: 'The user has been deleted' });
+          res.status(200).json({ message: 'The user has been deleted', count });
         } else {
           res.status(404).json({ message: 'The user could not be found' });
         }
@@ -108,12 +120,36 @@ router.delete('/:id', async (req, res) => {
       }
 });
 
-// PUT for `/users/:id`
+/*
+PUT for `/users/:id`
+TODO: Add middleware to ensure user is logged in
+ROUTE = '/users/:id'
+RETURNS message (success or failure) and updatedUser object
+@success_object = {
+    "message": "The user has been updated",
+    "updatedUser": {
+        "id": "0cd99de2-bcc3-4c3e-8915-f6866ad234c7",
+        "firstname": "Liz",
+        "lastname": "Jo",
+        "username": "lijones",
+        "password": "test",
+        "email": "jones@gmail.com",
+        "role": "teacher"
+    }
+}
+@failure_object = {
+    "message": "The user could not be found"
+}
+*/
 router.put('/:id', async (req, res) => {
     try {
+        const updatedUser = {
+            id: req.params.id.toString(),
+            ...req.body
+        };
         const user = await updateUser(req.params.id.toString(), req.body);
         if (user) {
-          res.status(200).json({ message: 'The user has been updated' });
+          res.status(200).json({ message: 'The user has been updated', updatedUser });
         } else {
           res.status(404).json({ message: 'The user could not be found' });
         }
