@@ -159,6 +159,92 @@ describe('addUser', () => {
 
 // PUT
 
+describe('updateUser', () => {
+    // cleanup for db
+    afterEach(async () => {
+        await db('users').truncate();
+    });
+
+    it('should return 200', async () => {
+        const user = await Users.addUser({
+            id: "1",
+            firstname: "Lisa",
+            lastname: "Jones",
+            username: "lijones",
+            password: "test",
+            email: "jones@gmail.com",
+            role: "teacher"
+        });
+
+        const updatedUser = {
+            firstname: "Li",
+            lastname: "Jo",
+            username: "lijones",
+            password: "test",
+            email: "jones@gmail.com",
+            role: "teacher"
+        }
+
+        let response = await request(server).put("/users/1").send(updatedUser);
+        expect(response.status).toBe(200);
+    });
+
+    it('should return `The user has been updated`', async () => {
+        const user = await Users.addUser({
+            id: "1",
+            firstname: "Lisa",
+            lastname: "Jones",
+            username: "lijones",
+            password: "test",
+            email: "jones@gmail.com",
+            role: "teacher"
+        });
+
+        const updatedUser = {
+            firstname: "Li",
+            lastname: "Jo",
+            username: "lijones",
+            password: "test",
+            email: "jones@gmail.com",
+            role: "teacher"
+        }
+
+        let response = await request(server).put("/users/1").send(updatedUser);
+        expect(response.body).toEqual({ message: 'The user has been updated' });
+    });
+
+    it('should return 404 if there\'s no user with provided id', async () => {
+
+        const updatedUser = {
+            firstname: "Li",
+            lastname: "Jo",
+            username: "lijones",
+            password: "test",
+            email: "jones@gmail.com",
+            role: "teacher"
+        }
+
+        let response = await request(server).put("/users/1").send(updatedUser);
+        expect(response.status).toBe(404);
+    });
+
+    it('should return "The user could not be found" if there\'s no user with provided id', async () => {
+
+        const updatedUser = {
+            firstname: "Li",
+            lastname: "Jo",
+            username: "lijones",
+            password: "test",
+            email: "jones@gmail.com",
+            role: "teacher"
+        }
+
+        let response = await request(server).put("/users/1").send(updatedUser);
+
+        expect(response.body).toEqual({ message: 'The user could not be found' });
+    });
+});
+
 // DELETE
 
 describe('deleteUser', () => {

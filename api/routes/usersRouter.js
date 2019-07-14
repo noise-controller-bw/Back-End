@@ -1,4 +1,4 @@
-const { getAllUsers, getUserById, getUserByFilter, addUser, deleteUser } = require('../helpers');
+const { getAllUsers, getUserById, getUserByFilter, addUser, deleteUser, updateUser } = require('../helpers');
 const router = require('express').Router();
 
 /*
@@ -109,6 +109,19 @@ router.delete('/:id', async (req, res) => {
 });
 
 // PUT for `/users/:id`
-
+router.put('/:id', async (req, res) => {
+    try {
+        const user = await updateUser(req.params.id.toString(), req.body);
+        if (user) {
+          res.status(200).json({ message: 'The user has been updated' });
+        } else {
+          res.status(404).json({ message: 'The user could not be found' });
+        }
+      } catch (error) {
+        res.status(500).json({
+          message: 'Error updating the user', error
+        });
+      }
+});
 
 module.exports = router;
