@@ -2,9 +2,7 @@ const express = require('express');
 const server = express();
 const middleWareConfig = require('../config/middleware.js')
 
-// const db = require('../data/dbConfig.js');
-
-const { usersRouter } = require('./routes');
+const { usersRouter, classesRouter } = require('./routes');
 
 middleWareConfig(server);
 
@@ -12,6 +10,7 @@ server.use(express.json());
 
 // routers
 server.use('/users', usersRouter);
+server.use('/classes', classesRouter);
 
 server.get('/', (req, res) => {
   res.status(200).json({ api: 'up and running!' });
