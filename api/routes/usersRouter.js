@@ -14,7 +14,7 @@ TODO: Add middleware to ensure user is logged in
 ROUTE = '/users'
 RETURNS an array of users
 @user object = {
-    id: "1",
+    id: "1", // id is a string!
     firstname: "Lisa",
     lastname: "Jones",
     username: "lijones",
@@ -39,12 +39,12 @@ router.get("/", async (req, res) => {
 });
 
 /*
-GET route for `/users/:id`
+GET BY ID ROUTE
 TODO: Add middleware to ensure user is logged in
 ROUTE = '/users/:id'
 RETURNS user object
 @user object = {
-    id: "1",
+    id: "1", // id is a string!
     firstname: "Lisa",
     lastname: "Jones",
     username: "lijones",
@@ -71,7 +71,7 @@ TODO: Add middleware to ensure user is logged in
 ROUTE = '/users'
 RETURNS user object
 @user object = {
-    id: "1",
+    id: "1", // id is a string!
     firstname: "Lisa",
     lastname: "Jones",
     username: "lijones",
@@ -136,7 +136,7 @@ RETURNS message (success or failure) and updatedUser object
 @success_object = {
     "message": "The user has been updated",
     "updatedUser": {
-        "id": "0cd99de2-bcc3-4c3e-8915-f6866ad234c7",
+        "id": "0cd99de2-bcc3-4c3e-8915-f6866ad234c7", // id is a string!
         "firstname": "Liz",
         "lastname": "Jo",
         "username": "lijones",

@@ -4,7 +4,12 @@ const middleWareConfig = require("../config/middleware.js");
 
 // const db = require('../data/dbConfig.js');
 
-const { usersRouter, sessionsRouter, authRouter } = require("./routes");
+const {
+  usersRouter,
+  sessionsRouter,
+  authRouter,
+  classesRouter
+} = require("./routes");
 
 middleWareConfig(server);
 
@@ -12,6 +17,8 @@ server.use(express.json());
 
 // routers
 server.use("/users", usersRouter);
+
+server.use("/classes", classesRouter);
 
 server.use("/sessions", sessionsRouter);
 
