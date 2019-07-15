@@ -98,7 +98,7 @@ router.delete("/:id", async (req, res) => {
   try {
     const count = await removeSessions(req.params.id.toString());
     if (count > 0) {
-      res.status(204).json({ message: "The user has been deleted", count });
+      res.status(200).json({ message: "The user has been deleted", count });
     } else {
       res.status(404).json({
         message: "That session does not exist, perhaps it was deleted already"

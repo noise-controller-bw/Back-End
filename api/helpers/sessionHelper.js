@@ -54,13 +54,6 @@ function updateSessions(id, changes) {
   return db("sessions")
     .where({ id })
     .update(changes);
-  // .then(count => {
-  //   if (count > 0) {
-  //     return findById(id);
-  //   } else {
-  //     return null;
-  //   }
-  // });
 }
 
 function removeSessions(id) {

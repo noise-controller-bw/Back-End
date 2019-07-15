@@ -19,6 +19,7 @@ router.post("/register", (req, res) => {
     });
 });
 
+//Todo: Add authenticate mw to ensure user is authenticated
 router.post("/login", (req, res) => {
   let { username, password } = req.body;
 
