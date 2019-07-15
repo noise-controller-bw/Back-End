@@ -33,29 +33,10 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// router.post("/", async (req, res) => {
-//   const sessions = req.body;
-
-//   if (sessions) {
-//     try {
-//       const inserted = await addSessions(sessions);
-//       res.status(201).json(inserted);
-//     } catch (error) {
-//       res
-//         .status(500)
-//         .json({ message: "We ran into an error creating the session" });
-//     }
-//   } else {
-//     res
-//       .status(400)
-//       .json({ message: "Please provided required fields to create sessions" });
-//   }
-// });
-
 router.post("/", async (req, res) => {
   const sessions = req.body;
 
-  if (!sessions.date && !sessions.score && !sessions.lessonName) {
+  if (!sessions.date || !sessions.score || !sessions.lessonName) {
     res
       .status(400)
       .json({ message: "Please provided required fields to create sessions" });
@@ -81,7 +62,7 @@ router.put("/:id", async (req, res) => {
     if (session) {
       res
         .status(200)
-        .json({ message: "The user has been updated", updatedSessions });
+        .json({ message: "The session has been updated", updatedSessions });
     } else {
       res.status(404).json({ message: "The session could not be found" });
     }
@@ -98,7 +79,7 @@ router.delete("/:id", async (req, res) => {
   try {
     const count = await removeSessions(req.params.id.toString());
     if (count > 0) {
-      res.status(200).json({ message: "The user has been deleted", count });
+      res.status(200).json({ message: "The session has been deleted", count });
     } else {
       res.status(404).json({
         message: "That session does not exist, perhaps it was deleted already"
