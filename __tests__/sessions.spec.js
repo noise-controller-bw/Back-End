@@ -24,12 +24,7 @@ describe("sessions helpers", () => {
 
   //Get all sessions
   describe("GET /sessions", () => {
-    it("should have an array of 0 length if no sessions stored", async () => {
-      const sessions = await db("sessions");
-      expect(sessions).toHaveLength(0);
-    });
-
-    it("another way to find empty array", async () => {
+    it("should return an empty array if no sessions are stored", async () => {
       const res = await supertest(server).get("/sessions");
 
       expect(res.body).toEqual([]);
@@ -135,8 +130,7 @@ describe("sessions helpers", () => {
   });
 
   describe("addSessions model", () => {
-    it("should insert provided users into the db", async () => {
-      // await db('users').truncate();
+    it("should insert provided session into the db", async () => {
       await addSessions({
         date: "06/20/19",
         score: 80,

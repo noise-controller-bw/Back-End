@@ -8,26 +8,12 @@ module.exports = {
   addSessions,
   updateSessions,
   removeSessions
-  //   findByRole
-  //   getRecipeIngredients,
-  //   getRecipe
 };
 
-//find teacher with just first & last name
-//get('users')
 function findSessions() {
   return db("sessions").select("id", "date", "score", "lessonName");
 }
 
-//find sessions with  class name, session scores & highest score
-//get ('sessions')
-// function findSessions() {
-//   return db("sessions as p")
-//     .join("class as u", "u.id", "p.class_id") //need this join here?
-//     .select("p.id", "p.date", "p.score", "p.HighestScore", "p.className");
-// }
-
-//find teacher by id
 function findSessionsById(id) {
   return db("sessions")
     .where({ id })
@@ -61,7 +47,3 @@ function removeSessions(id) {
     .where({ id })
     .del();
 }
-
-// function findByRole(decodedRole) {
-//   return db("sessions").where("role", decodedRole);
-// }
