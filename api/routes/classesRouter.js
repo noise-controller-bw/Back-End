@@ -2,6 +2,7 @@ const { getAllClasses, getClassById, addClass } = require('../helpers');
 
 const router = require('express').Router();
 
+//TODO: comments
 router.get('/', async (req, res) => {
     try {
         const allClasses = await getAllClasses();
@@ -16,6 +17,7 @@ router.get('/', async (req, res) => {
     }
 });
 
+//TODO: comments
 router.get('/:id', (req, res) => {
     getClassById(req.params.id.toString())
       .then(classById => {
@@ -26,6 +28,23 @@ router.get('/:id', (req, res) => {
           }
       })
       .catch(err => res.send(err));
+});
+
+//TODO: comments
+router.post('/', (req, res) => {
+    const { name, grade } = req.body;
+    if (!name) {
+      return res.status(422).json({ error: 'fill out required `name` field!' });
+    } else {
+      const newClass = { name, grade };
+      addClass(newClass)
+        .then(resClasses => {
+            res.status(201).json(resClasses);
+        })
+        .catch(error => {
+            res.status(500).json(error);
+        });
+    }
 });
 
 
