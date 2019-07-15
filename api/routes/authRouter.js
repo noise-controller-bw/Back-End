@@ -9,14 +9,24 @@ router.post("/register", (req, res) => {
   let user = req.body;
   const hash = bcrypt.hashSync(user.password, 10);
   user.password = hash;
-
-  addUser(user)
-    .then(saved => {
-      res.status(201).json(saved);
-    })
-    .catch(error => {
-      res.status(500).json(error);
-    });
+  if (
+    !user.firstname ||
+    !user.lastname ||
+    !user.username ||
+    !user.password ||
+    !user.email ||
+    !user.role
+  ) {
+    return res.status(422).json({ message: "Please fill out missing fields!" });
+  } else {
+    addUser(user)
+      .then(saved => {
+        res.status(201).json(saved);
+      })
+      .catch(error => {
+        res.status(500).json(error);
+      });
+  }
 });
 
 //Todo: Add authenticate mw to ensure user is authenticated
