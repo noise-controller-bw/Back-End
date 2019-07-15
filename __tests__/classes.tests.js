@@ -86,7 +86,7 @@ describe("addClass", () => {
   it("should insert classes into the db", async () => {
     await Classes.addClass({
       id: "1",
-      name: "Ms. Angela's",
+      name: "Ms. Jen's",
       grade: "1st"
     });
     await Classes.addClass({
@@ -98,7 +98,7 @@ describe("addClass", () => {
     const recievedClasses = await db("class");
 
     expect(recievedClasses).toHaveLength(2);
-    expect(recievedClasses[0].name).toBe("Ms. Angela's");
+    expect(recievedClasses[0].name).toBe("Ms. Jen's");
   });
 
   it("should return a status code of 201", async () => {
@@ -106,7 +106,7 @@ describe("addClass", () => {
       .post("/classes")
       .send({
         id: "1",
-        name: "Ms. Angela's",
+        name: "Ms. Jen's",
         grade: "1st"
       });
 
@@ -116,13 +116,13 @@ describe("addClass", () => {
   it("should return the new class on insert", async () => {
     const newClass = await Classes.addClass({
       id: "1",
-      name: "Ms. Angela's",
+      name: "Ms. Patty's",
       grade: "1st"
     });
 
     expect(newClass).toEqual({
       id: "1",
-      name: "Ms. Angela's",
+      name: "Ms. Patty's",
       grade: "1st"
     });
   });
@@ -133,5 +133,83 @@ describe("addClass", () => {
       .send({ grade: "1st" });
 
     expect(response.status).toBe(422);
+  });
+
+  //UPDATE
+  describe("update Class", () => {
+    it("should return 200", async () => {
+      const classes = await Classes.addClass({
+        id: "1",
+        name: "Mr. Smith's",
+        grade: "5th"
+      });
+
+      const updatedClass = {
+        id: "1",
+        name: "Mrs. Jan's",
+        grade: "6th"
+      };
+
+      let res = await request(server)
+        .put("/classes/1")
+        .send(updatedClass);
+      expect(res.status).toBe(200);
+    });
+
+    it("should return the updated class", async () => {
+      const classes = await Classes.addClass({
+        id: "1",
+        name: "Ms. Smith's",
+        grade: "1st"
+      });
+
+      const updatedClass = {
+        id: "1",
+        name: "Ms. Tino's",
+        grade: "4th"
+      };
+
+      let res = await request(server)
+        .put("/classes/1")
+        .send(updatedClass);
+      expect(res.body.message).toEqual("The class has been updated");
+    });
+
+    it("should return 404 for no class with provided id", async () => {
+      const updatedClass = {
+        id: "1",
+        name: "Ms. Tino's",
+        grade: "4th"
+      };
+
+      let res = await request(server)
+        .put("/classes/3")
+        .send(updatedClass);
+      expect(res.status).toBe(404);
+    });
+  });
+
+  //DELETE
+  describe("remove Classes", () => {
+    it("should delete a class", async () => {
+      await Classes.addClass({
+        id: "1",
+        name: "Ms. Tino's",
+        grade: "4th"
+      });
+
+      await Classes.addClass({
+        id: "2",
+        name: "Ms. Thompson",
+        grade: "5th"
+      });
+
+      await removeClass("1");
+
+      const deletedClass = await findSessionsById("1");
+      const remained = await findSessionsById("2");
+      expect(deletedClass).toBeUndefined();
+      expect(remained.grade).toBe("5th");
+    });
   });
 });

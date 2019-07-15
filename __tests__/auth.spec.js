@@ -5,9 +5,6 @@ const server = require("../api/server");
 const Users = require("../api/helpers/usersHelper.js");
 
 describe("login and registration routes", () => {
-  //NEED GLOBAL FUNCTIONS PROVIDE BY JEST THAT CLEAN UP TESTS HERE!!!
-  //beforeAll  implements the clean up only once before tests are ran
-  //beforeEach implements the clean up before each test is ran
   afterEach(async () => {
     await db("users").truncate();
   });
