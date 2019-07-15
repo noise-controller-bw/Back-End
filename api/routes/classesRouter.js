@@ -2,7 +2,18 @@ const { getAllClasses, getClassById, addClass } = require('../helpers');
 
 const router = require('express').Router();
 
-//TODO: comments
+/*
+GET ROUTE
+TODO: Add middleware to ensure user is logged in
+ROUTE = '/classes'
+RETURNS an array of classes or an empry array if there's no classes in the class db
+@class object = {
+    id: "1", // id is a string!
+    name: "Ms. Angela's",
+    grade: "1st" // not required
+}
+*/
+
 router.get('/', async (req, res) => {
     try {
         const allClasses = await getAllClasses();
@@ -17,7 +28,17 @@ router.get('/', async (req, res) => {
     }
 });
 
-//TODO: comments
+/*
+GET BY ID ROUTE
+TODO: Add middleware to ensure user is logged in
+ROUTE = '/classes/:id'
+RETURNS class object
+@class object = {
+    id: "1", // id is a string!
+    name: "Ms. Angela's",
+    grade: "1st" // not required
+}
+*/
 router.get('/:id', (req, res) => {
     getClassById(req.params.id.toString())
       .then(classById => {
@@ -30,7 +51,16 @@ router.get('/:id', (req, res) => {
       .catch(err => res.send(err));
 });
 
-//TODO: comments
+/* POST
+TODO: Add middleware to ensure user is logged in
+ROUTE = '/classes'
+RETURNS class object
+@class object = {
+    id: "1", // id is a string!
+    name: "Ms. Angela's",
+    grade: "1st" // not required
+}
+*/
 router.post('/', (req, res) => {
     const { name, grade } = req.body;
     if (!name) {
