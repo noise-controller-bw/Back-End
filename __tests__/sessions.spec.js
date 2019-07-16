@@ -15,6 +15,8 @@ describe("sessions helpers", () => {
   beforeEach(async () => {
     //truncate clears db very fast, used in seeding
     await db("sessions").truncate();
+    await db("class").truncate();
+    await db("users").truncate();
   });
 
   it("should set enviornment to testing", () => {
