@@ -128,7 +128,7 @@ router.delete("/:id", async (req, res) => {
       res.status(200).json({ message: "The class has been deleted", count });
     } else {
       res.status(404).json({
-        message: "That class does not exist, perhaps it was deleted already"
+        message: "That class does not exist"
       });
     }
   } catch (error) {

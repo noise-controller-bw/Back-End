@@ -73,65 +73,65 @@ describe("getClassById", () => {
 
     expect(myClass).toBeUndefined();
   });
-});
 
-// POST
+  // POST
 
-describe("addClass", () => {
-  // cleanup for db
-  afterEach(async () => {
-    await db("class").truncate();
-  });
-
-  it("should insert classes into the db", async () => {
-    await Classes.addClass({
-      id: "1",
-      name: "Ms. Jen's",
-      grade: "1st"
-    });
-    await Classes.addClass({
-      id: "2",
-      name: "Mr. Nick's",
-      grade: "4th"
+  describe("addClass", () => {
+    // cleanup for db
+    afterEach(async () => {
+      await db("class").truncate();
     });
 
-    const recievedClasses = await db("class");
-
-    expect(recievedClasses).toHaveLength(2);
-    expect(recievedClasses[0].name).toBe("Ms. Jen's");
-  });
-
-  it("should return a status code of 201", async () => {
-    let response = await request(server)
-      .post("/classes")
-      .send({
+    it("should insert classes into the db", async () => {
+      await Classes.addClass({
         id: "1",
         name: "Ms. Jen's",
         grade: "1st"
       });
+      await Classes.addClass({
+        id: "2",
+        name: "Mr. Nick's",
+        grade: "4th"
+      });
 
-    expect(response.status).toBe(201);
-  });
+      const recievedClasses = await db("class");
 
-  it("should return the new class on insert", async () => {
-    const newClass = await Classes.addClass({
-      id: "1",
-      name: "Ms. Patty's",
-      grade: "1st"
+      expect(recievedClasses).toHaveLength(2);
+      expect(recievedClasses[0].name).toBe("Ms. Jen's");
     });
 
-    expect(newClass).toEqual({
-      id: "1",
-      name: "Ms. Patty's",
-      grade: "1st"
+    it("should return a status code of 201", async () => {
+      let response = await request(server)
+        .post("/classes")
+        .send({
+          id: "1",
+          name: "Ms. Jen's",
+          grade: "1st"
+        });
+
+      expect(response.status).toBe(201);
     });
-  });
 
-  it("should return a `422` status code if name field is not included inside the body", async () => {
-    let response = await request(server)
-      .post("/classes")
-      .send({ grade: "1st" });
+    it("should return the new class on insert", async () => {
+      const newClass = await Classes.addClass({
+        id: "1",
+        name: "Ms. Patty's",
+        grade: "1st"
+      });
 
-    expect(response.status).toBe(422);
+      expect(newClass).toEqual({
+        id: "1",
+        name: "Ms. Patty's",
+        grade: "1st"
+      });
+    });
+
+    it("should return a `422` status code if name field is not included inside the body", async () => {
+      let response = await request(server)
+        .post("/classes")
+        .send({ grade: "1st" });
+
+      expect(response.status).toBe(422);
+    });
   });
 });
