@@ -13,7 +13,7 @@ const {
 
 middleWareConfig(server);
 
-server.use(express.json());
+// server.use(express.json());
 
 // routers
 server.use("/users", usersRouter);
