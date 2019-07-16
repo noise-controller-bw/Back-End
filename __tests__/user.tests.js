@@ -28,6 +28,7 @@ describe('GET /users', () => {
         const user = [
             {
                 id: "1",
+                ref_id: 1,
                 firstname: "Lisa",
                 lastname: "Jones",
                 username: "lijones",
@@ -96,7 +97,6 @@ describe('addUser', () => {
     });
 
     it('should insert users into the db', async () => {
-        // await db('users').truncate();
         await Users.addUser({ 
             firstname: "Lisa",
             lastname: "Jones",
@@ -133,21 +133,27 @@ describe('addUser', () => {
     });
 
     it('should return the new user on insert', async () => {
-        const user = await Users.addUser({ id: "1",
-        firstname: "Lisa",
-        lastname: "Jones",
-        username: "lijones",
-        password: "test",
-        email: "jones@gmail.com",
-        role: "teacher" });
+        const user = await Users.addUser({ 
+            id: "1",
+            ref_id: 1,
+            firstname: "Lisa",
+            lastname: "Jones",
+            username: "lijones",
+            password: "test",
+            email: "jones@gmail.com",
+            role: "teacher" 
+        });
 
-        expect(user).toEqual({ id: "1",
-        firstname: "Lisa",
-        lastname: "Jones",
-        username: "lijones",
-        password: "test",
-        email: "jones@gmail.com",
-        role: "teacher" });
+        expect(user).toEqual({ 
+            id: "1",
+            ref_id: 1,
+            firstname: "Lisa",
+            lastname: "Jones",
+            username: "lijones",
+            password: "test",
+            email: "jones@gmail.com",
+            role: "teacher" 
+        });
     });
 
     it('should return a `422` status code if firstname, lastname, username, password, email, role fields are not included inside the body', async () => {
