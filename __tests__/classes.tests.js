@@ -28,6 +28,7 @@ describe("GET /classes", () => {
     const testClass = [
       {
         id: "1",
+        ref_id: 1,
         name: "Ms. Angela's",
         grade: "1st"
       }
@@ -115,12 +116,14 @@ describe("getClassById", () => {
     it("should return the new class on insert", async () => {
       const newClass = await Classes.addClass({
         id: "1",
+        ref_id: 1,
         name: "Ms. Patty's",
         grade: "1st"
       });
 
       expect(newClass).toEqual({
         id: "1",
+        ref_id: 1,
         name: "Ms. Patty's",
         grade: "1st"
       });
