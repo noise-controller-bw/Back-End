@@ -6,11 +6,11 @@
 
 - [Description](#Description)
 - [MVP](#MVP)
-- [Stretch] (#Stretch)
+- [Stretch](#Stretch)
 - [Resources](#Resources)
    - [Authentication](#Authentication)
-    - [Register](#Register)
-    - [Login](#Login)
+        - [Register](#Register)
+        - [Login](#Login)
    - [Users](#Users)
    - [Sessions](#Sessions)
    - [Classes](#Classes)
@@ -38,16 +38,19 @@ _**Pitch:**_ As a teacher, it can be hard to control the noise level in your cla
 ## Authentication
 
 ### Register
-####[POST]####
+
+**[POST]**
+
 **URL:** `/register`
+
 **Payload:**
 ```js
-firstname: "Matt",
-lastname: "Smith",
-username: "Msmith",
-password: "test",
-email: "smith5w@gmail.com",
-role: "teacher"
+"firstname": "Alan",
+"lastname": "Turing",
+"username": "Enigma",
+"password": "super%password",
+"email": "turing@email.me",
+"role": "teacher"
 ```
 **Returns:**
 Example:
@@ -56,11 +59,11 @@ Example:
     "saved": {
         "id": "774a744d-6cb3-4a41-b45d-0ef94b9d2af7", // use it for routes
         "ref_id": 7, // use it for joins in db
-        "firstname": "Matt",
-        "lastname": "Smith",
-        "username": "Msmith",
+        "firstname": "Alan",
+        "lastname": "Turing",
+        "username": "Enigma",
         "password": "$2a$10$BmtIC5xnE6EhHtm6kEMZcebzlJGnvgteIDmm.L3/cDmNZV2ACeRDK",
-        "email": "smith5w@gmail.com",
+        "email": "turing@email.me",
         "role": "teacher"
     },
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoiNzc0YTc0NGQtNmNiMy00YTQxLWI0NWQtMGVmOTRiOWQyYWY3IiwidXNlcm5hbWUiOiJNdGgiLCJyb2xlcyI6InRlYWNoZXIiLCJpYXQiOjE1NjMzMTQ4NzQsImV4cCI6MTU2MzQwMTI3NH0.UFGfIRyHym3sVwi9xkfOmQ9QdjJ9OQehFr00Hl9ZwYw"
@@ -68,11 +71,15 @@ Example:
 ```
 
 ### Login
+
 **[POST]**
+
 **URL:** `/login`
+
 **Payload:**
 ```js
 ```
+
 **Returns:**
 Example:
 ```js
