@@ -137,4 +137,89 @@ describe("getClassById", () => {
       expect(response.status).toBe(422);
     });
   });
+
+  //UPDATE
+  describe("update Class", () => {
+    it("should return 200", async () => {
+      const classes = await Classes.addClass({
+        id: "1",
+        ref_id: 1,
+        name: "Mr. Smith's",
+        grade: "5th"
+      });
+
+      const updatedClass = {
+        id: "1",
+        ref_id: 1,
+        name: "Mrs. Jan's",
+        grade: "6th"
+      };
+
+      let res = await request(server)
+        .put("/classes/1")
+        .send(updatedClass);
+      expect(res.status).toBe(200);
+    });
+
+    it("should return the updated class", async () => {
+      const classes = await Classes.addClass({
+        id: "1",
+        ref_id: 1,
+        name: "Ms. Smith's",
+        grade: "1st"
+      });
+
+      const updatedClass = {
+        id: "1",
+        ref_id: 1,
+        name: "Ms. Tino's",
+        grade: "4th"
+      };
+
+      let res = await request(server)
+        .put("/classes/1")
+        .send(updatedClass);
+      expect(res.body.message).toEqual("The class has been updated");
+    });
+
+    it("should return 404 for no class with provided id", async () => {
+      const updatedClass = {
+        id: "1",
+        ref_id: 1,
+        name: "Ms. Tino's",
+        grade: "4th"
+      };
+
+      let res = await request(server)
+        .put("/classes/3")
+        .send(updatedClass);
+      expect(res.status).toBe(404);
+    });
+  });
+
+  //DELETE
+  describe("remove Classes", () => {
+    it("should delete a class", async () => {
+      await Classes.addClass({
+        id: "1",
+        ref_id: 1,
+        name: "Ms. Tino's",
+        grade: "4th"
+      });
+
+      await Classes.addClass({
+        id: "2",
+        ref_id: 2,
+        name: "Ms. Thompson",
+        grade: "5th"
+      });
+
+      await Classes.removeClass("1");
+
+      const deletedClass = await Classes.getClassById("1");
+      const remained = await Classes.getClassById("2");
+      expect(deletedClass).toBeUndefined();
+      expect(remained.grade).toBe("5th");
+    });
+  });
 });
