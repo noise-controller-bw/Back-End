@@ -8,7 +8,7 @@ exports.up = function(knex, Promise) {
     tbl
       .integer("user_id")
       .unsigned()
-      .references("id")
+      .references("ref_id")
       .inTable("users")
       .onDelete("CASCADE")
       .onUpdate("CASCADE");
@@ -16,7 +16,7 @@ exports.up = function(knex, Promise) {
     tbl
       .integer("class_id")
       .unsigned()
-      .references("id")
+      .references("ref_id")
       .inTable("class")
       .onDelete("CASCADE")
       .onUpdate("CASCADE");
