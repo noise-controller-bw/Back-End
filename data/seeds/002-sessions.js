@@ -1,5 +1,5 @@
 exports.seed = function(knex, Promise) {
-  return knex('users').insert([
+  return knex('sessions').insert([
     {
       id: "1",
       user_id: 1,
