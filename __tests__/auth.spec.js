@@ -65,7 +65,7 @@ describe("login and registration routes", () => {
         .post("/register")
         .send(newUser);
 
-      expect(res.body.username).toEqual("Msmith");
+      expect(res.body.saved.username).toEqual("Msmith");
     });
   });
 
