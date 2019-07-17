@@ -5,7 +5,8 @@ const {
   findSessions,
   findSessionsById,
   addSessions,
-  removeSessions
+  removeSessions,
+  getScore
 } = require("../api/helpers/sessionHelper.js");
 
 describe("sessions helpers", () => {
@@ -226,6 +227,21 @@ describe("sessions helpers", () => {
       const remained = await findSessionsById("2");
       expect(deletedsession).toBeUndefined();
       expect(remained.lessonName).toBe("Math");
+    });
+  });
+
+  //SESSIONS/:ID/SCORE
+  describe("GET session/:id/score", () => {
+    it("should return 200 status upon success", async () => {
+      const res = await supertest(server).get("/sessions/1/score");
+
+      expect(res.status).toBe(200);
+    });
+
+    it("returns empty array if no sessions stored", async () => {
+      const score = await getScore("2");
+
+      expect(score).toEqual([]);
     });
   });
 });

@@ -7,7 +7,8 @@ module.exports = {
   getSessionsByFilter,
   addSessions,
   updateSessions,
-  removeSessions
+  removeSessions,
+  getScore
 };
 
 function findSessions() {
@@ -46,4 +47,19 @@ function removeSessions(id) {
   return db("sessions")
     .where({ id })
     .del();
+}
+
+function getScore(SessId) {
+  return db("sessions as s")
+    .join("users as u", "u.id", "s.user_id")
+    .join("class as c", "c.id", "s.class_id")
+    .select(
+      "u.firstname",
+      "u.lastname",
+      "s.date",
+      "s.lessonName",
+      "c.name as className",
+      "s.score"
+    )
+    .where("s.id", SessId);
 }
