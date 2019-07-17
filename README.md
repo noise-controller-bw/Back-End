@@ -54,17 +54,16 @@ _**Pitch:**_ As a teacher, it can be hard to control the noise level in your cla
     "role": "teacher"
 }
 ```
-**Returns:**
+**Returns:** a user object and the authentication token.
+
 Example:
 ```js
 {
-    "saved": {
+    "user": {
         "id": "774a744d-6cb3-4a41-b45d-0ef94b9d2af7", // use it for routes
-        "ref_id": 7, // use it for joins in db
         "firstname": "Alan",
         "lastname": "Turing",
         "username": "Enigma",
-        "password": "$2a$10$BmtIC5xnE6EhHtm6kEMZcebzlJGnvgteIDmm.L3/cDmNZV2ACeRDK",
         "email": "turing@email.me",
         "role": "teacher"
     },
@@ -80,11 +79,27 @@ Example:
 
 **Payload:**
 ```js
+{
+    "username": "Enigma",
+	"password": "super%password"
+}
 ```
 
 **Returns:**
 Example:
 ```js
+{
+    "message": "Welcome Enigma!",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoiNGRhYTFhMmYtMDdhNi00NWQ0LTkxMWQtYzQyNjJlNmM1NmZmIiwidXNlcm5hbWUiOiJFbmlnbWEiLCJyb2xlcyI6InRlYWNoZXIiLCJpYXQiOjE1NjMzMjI2MDksImV4cCI6MTU2MzQwOTAwOX0.hqB2hZ9HJjEiwbZpZXYfPTgDmjAfzE2MpJFLJlVKeJM",
+    "user": {
+        "id": "4daa1a2f-07a6-45d4-911d-c4262e6c56ff",
+        "firstname": "Alan",
+        "lastname": "Turing",
+        "username": "Enigma",
+        "email": "turing@email.me",
+        "role": "teacher"
+    }
+}
 ```
 
 ## Users

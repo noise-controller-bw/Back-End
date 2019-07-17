@@ -83,7 +83,7 @@ RETURNS user object
 
 router.post("/", (req, res) => {
   const { firstname, lastname, username, password, email, role } = req.body;
-  if (!firstname || !lastname || !username || !password || !email || !role) {
+  if (!firstname || !lastname || !username || !password || !email) {
     return res.status(422).json({ error: "fill out required fields!" });
   } else {
     const newUser = { firstname, lastname, username, password, email, role };
