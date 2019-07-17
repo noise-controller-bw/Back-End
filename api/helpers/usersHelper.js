@@ -46,8 +46,8 @@ function getSessionsByUserId(user_id) {
             "u.lastname",
             "s.date",
             "s.score",
-            "s.lessonName as subject",
-            "c.name as class_name",
+            "s.lessonName",
+            "c.name",
             "c.grade"
         )
         .where("u.id", user_id);
@@ -56,14 +56,6 @@ function getSessionsByUserId(user_id) {
 // GET classes by user id
 // returns UNIQUE classes which had sessions with particular user, NOT ALL CLASSES FROM THE DB!!!
 
-// select 
-// DISTINCT c.id as id, c.name as class_name, c.grade 
-// from users as u 
-// join sessions as s 
-// on u.ref_id = s.user_id 
-// join class as c 
-// on s.class_id = c.ref_id 
-// where u.id = 2
 
 function getClassesByUserId(user_id) {
     return db("users as u")
@@ -71,7 +63,7 @@ function getClassesByUserId(user_id) {
     .join("class as c", "s.class_id", "c.ref_id")
     .select(
         "c.id",
-        "c.name as class_name",
+        "c.name",
         "c.grade"
     )
     .distinct()
