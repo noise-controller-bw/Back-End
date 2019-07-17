@@ -21,10 +21,6 @@ router.post("/register", (req, res) => {
   } else {
     addUser(user)
       .then(saved => {
-<<<<<<< HEAD
-        const token = generateToken(saved);
-        res.status(201).json({saved, token});
-=======
         // we want to have an option to access restricted routes right after registration
         const token = generateToken(saved);
 
@@ -33,7 +29,6 @@ router.post("/register", (req, res) => {
         const myUser = { id, firstname, lastname, username, email, role };
 
         res.status(201).json({user: myUser, token});
->>>>>>> ae85c627a8430bc35912efac826e23154b21f856
       })
       .catch(error => {
         res.status(500).json(error);
@@ -59,13 +54,8 @@ router.post("/login", (req, res) => {
           const myUser = { id, firstname, lastname,username, email, role };
 
           res.status(200).json({
-<<<<<<< HEAD
-            message: `Welcome ${user.username}!`,
-            token, user
-=======
             message: `Welcome ${username}!`,
             token, user: myUser
->>>>>>> ae85c627a8430bc35912efac826e23154b21f856
           });
         } else {
           res.status(401).json({ message: "Invalid Credentials" });
