@@ -2,6 +2,7 @@ const {
   getAllUsers,
   getUserById,
   getUserByFilter,
+  getSessionsByUserId,
   addUser,
   deleteUser,
   updateUser
@@ -63,7 +64,41 @@ router.get("/:id", (req, res) => {
         res.status(400).json({ message: "There's no user with this id" });
       }
     })
-    .catch(err => res.send(err));
+    .catch(err => {
+        return res.status(500).send(err);
+    });
+});
+
+/*
+GET SESSIONS BY USER ID
+TODO: Add middleware to ensure user is logged in
+ROUTE = '/users/:id/sessions' where id = user id
+RETURNS an array of session objects
+@session object = {
+    id: "1", // id of the session not user
+    first_name: "Alan", // users' first name
+    last_name: "Turing", // users' last name
+    date: "03/07/1984",
+    score: "100",
+    subject: "Math", // === lesson_name
+    class_name: "Ms. Angela's",
+    grade: "1st"
+}
+*/
+
+router.get("/:id/sessions", (req, res) => {
+    // TODO: add the code
+    getSessionsByUserId(req.params.id.toString())
+        .then(sessions => {
+            if(sessions) {
+                return res.status(200).json(sessions);
+            } else {
+                res.status(400).send({ message: "Sessions for this user not found" });
+            }
+        })
+        .catch(err => {
+            return res.status(500).send(err);
+        });
 });
 
 /* POST
