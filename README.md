@@ -45,12 +45,14 @@ _**Pitch:**_ As a teacher, it can be hard to control the noise level in your cla
 
 **Payload:**
 ```js
-"firstname": "Alan",
-"lastname": "Turing",
-"username": "Enigma",
-"password": "super%password",
-"email": "turing@email.me",
-"role": "teacher"
+{
+    "firstname": "Alan",
+    "lastname": "Turing",
+    "username": "Enigma",
+    "password": "super%password",
+    "email": "turing@email.me",
+    "role": "teacher"
+}
 ```
 **Returns:**
 Example:
