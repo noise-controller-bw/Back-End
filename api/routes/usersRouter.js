@@ -3,7 +3,7 @@ const {
   getUserById,
   getUserByFilter,
   getSessionsByUserId,
-  // getClasses by user id
+  getClassesByUserId,
   addUser,
   deleteUser,
   updateUser
@@ -88,13 +88,38 @@ RETURNS an array of session objects
 */
 
 router.get("/:id/sessions", (req, res) => {
-    // TODO: add the code
     getSessionsByUserId(req.params.id.toString())
         .then(sessions => {
             if(sessions) {
                 return res.status(200).json(sessions);
             } else {
                 res.status(400).send({ message: "Sessions for this user not found" });
+            }
+        })
+        .catch(err => {
+            return res.status(500).send(err);
+        });
+});
+
+/*
+GET CLASSES BY USER ID
+TODO: Add middleware to ensure user is logged in
+ROUTE = '/users/:id/classes' where id = user id
+RETURNS an array of unique classes objects, classes which had sessions with particular user, NOT ALL CLASSES FROM THE DB!!!
+@session object = {
+    id: "1",
+    class_name: "Ms. Angela's",
+    grade: "1st"
+}
+*/
+
+router.get("/:id/classes", (req, res) => {
+    getClassesByUserId(req.params.id.toString())
+        .then(classes => {
+            if(classes) {
+                return res.status(200).json(classes);
+            } else {
+                res.status(400).send({ message: "Classes for this user not found" });
             }
         })
         .catch(err => {
