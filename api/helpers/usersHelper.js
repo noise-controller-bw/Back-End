@@ -5,6 +5,7 @@ module.exports = {
     getAllUsers,
     getUserById,
     getUserByFilter,
+    getSessionsByUserId,
     addUser,
     updateUser,
     deleteUser
@@ -30,6 +31,25 @@ function getUserById(id) {
 // Must return user object
 function getUserByFilter(filter) {
     return db('users').where(filter).first();
+}
+
+// GET sessions by USER ID
+// Must return an array of objects
+function getSessionsByUserId(user_id) {
+    return db("users as u")
+        .join("sessions as s", "u.ref_id", "s.user_id")
+        .join("class as c", "s.class_id", "c.ref_id")
+        .select(
+            "s.id",
+            "u.firstname",
+            "u.lastname",
+            "s.date",
+            "s.score",
+            "s.lessonName as subject",
+            "c.name as class_name",
+            "c.grade"
+        )
+        .where("u.id", user_id);
 }
 
 // ADD user to the db, id is randomly created with uuid
