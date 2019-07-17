@@ -23,7 +23,7 @@ function findSessionsById(SessId) {
       "u.firstname",
       "u.lastname",
       "s.date",
-      "s.lessonName",
+      "s.lessonName as subject",
       "c.name as className",
       "c.grade",
       "s.score"

@@ -97,7 +97,7 @@ describe("sessions helpers", () => {
       await db("sessions").insert(sessions);
       const session = await findSessionsById("1");
 
-      expect(session[0].lessonName).toEqual("Math");
+      expect(session[0].firstname).toEqual("Jon");
     });
 
     it("returns additional info for class and users", async () => {
@@ -145,7 +145,7 @@ describe("sessions helpers", () => {
           grade: "1st",
           id: "1",
           lastname: "Smith",
-          lessonName: "Math",
+         subject: "Math",
           score: 100
         }
       ];
