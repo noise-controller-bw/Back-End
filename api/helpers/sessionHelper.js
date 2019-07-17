@@ -14,10 +14,21 @@ function findSessions() {
   return db("sessions").select("id", "date", "score", "lessonName");
 }
 
-function findSessionsById(id) {
-  return db("sessions")
-    .where({ id })
-    .first();
+function findSessionsById(SessId) {
+  return db("sessions as s")
+    .join("users as u", "u.ref_id", "s.user_id")
+    .join("class as c", "c.ref_id", "s.class_id")
+    .select(
+      "s.id",
+      "u.firstname",
+      "u.lastname",
+      "s.date",
+      "s.lessonName",
+      "c.name as className",
+      "c.grade",
+      "s.score"
+    )
+    .where("s.id", SessId);
 }
 
 function getSessionsByFilter(filter) {
