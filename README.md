@@ -6,11 +6,19 @@
 
 - [Description](#Description)
 - [MVP](#MVP)
+<<<<<<< HEAD
 - [Stretch] (#Stretch)
 - [Resources](#Resources)
    - [Authentication](#Authentication)
     - [Register](#Register)
     - [Login](#Login)
+=======
+- [Stretch](#Stretch)
+- [Resources](#Resources)
+   - [Authentication](#Authentication)
+        - [Register](#Register)
+        - [Login](#Login)
+>>>>>>> ae85c627a8430bc35912efac826e23154b21f856
    - [Users](#Users)
    - [Sessions](#Sessions)
    - [Classes](#Classes)
@@ -38,6 +46,7 @@ _**Pitch:**_ As a teacher, it can be hard to control the noise level in your cla
 ## Authentication
 
 ### Register
+<<<<<<< HEAD
 ####[POST]####
 **URL:** `/register`
 **Payload:**
@@ -61,6 +70,34 @@ Example:
         "username": "Msmith",
         "password": "$2a$10$BmtIC5xnE6EhHtm6kEMZcebzlJGnvgteIDmm.L3/cDmNZV2ACeRDK",
         "email": "smith5w@gmail.com",
+=======
+
+**[POST]**
+
+**URL:** `/register`
+
+**Payload:**
+```js
+{
+    "firstname": "Alan",
+    "lastname": "Turing",
+    "username": "Enigma",
+    "password": "super%password",
+    "email": "turing@email.me"
+}
+```
+**Returns:** a user object and the authentication token.
+
+Example:
+```js
+{
+    "user": {
+        "id": "774a744d-6cb3-4a41-b45d-0ef94b9d2af7", // use it for routes
+        "firstname": "Alan",
+        "lastname": "Turing",
+        "username": "Enigma",
+        "email": "turing@email.me",
+>>>>>>> ae85c627a8430bc35912efac826e23154b21f856
         "role": "teacher"
     },
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoiNzc0YTc0NGQtNmNiMy00YTQxLWI0NWQtMGVmOTRiOWQyYWY3IiwidXNlcm5hbWUiOiJNdGgiLCJyb2xlcyI6InRlYWNoZXIiLCJpYXQiOjE1NjMzMTQ4NzQsImV4cCI6MTU2MzQwMTI3NH0.UFGfIRyHym3sVwi9xkfOmQ9QdjJ9OQehFr00Hl9ZwYw"
@@ -68,6 +105,7 @@ Example:
 ```
 
 ### Login
+<<<<<<< HEAD
 **[POST]**
 **URL:** `/login`
 **Payload:**
@@ -76,6 +114,36 @@ Example:
 **Returns:**
 Example:
 ```js
+=======
+
+**[POST]**
+
+**URL:** `/login`
+
+**Payload:**
+```js
+{
+    "username": "Enigma",
+    "password": "super%password"
+}
+```
+
+**Returns:**
+Example:
+```js
+{
+    "message": "Welcome Enigma!",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoiNGRhYTFhMmYtMDdhNi00NWQ0LTkxMWQtYzQyNjJlNmM1NmZmIiwidXNlcm5hbWUiOiJFbmlnbWEiLCJyb2xlcyI6InRlYWNoZXIiLCJpYXQiOjE1NjMzMjI2MDksImV4cCI6MTU2MzQwOTAwOX0.hqB2hZ9HJjEiwbZpZXYfPTgDmjAfzE2MpJFLJlVKeJM",
+    "user": {
+        "id": "4daa1a2f-07a6-45d4-911d-c4262e6c56ff",
+        "firstname": "Alan",
+        "lastname": "Turing",
+        "username": "Enigma",
+        "email": "turing@email.me",
+        "role": "teacher"
+    }
+}
+>>>>>>> ae85c627a8430bc35912efac826e23154b21f856
 ```
 
 ## Users

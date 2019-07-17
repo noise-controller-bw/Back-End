@@ -58,14 +58,17 @@ describe("login and registration routes", () => {
         lastname: "Smith",
         username: "Msmith",
         password: "test",
-        email: "smith5w@gmail.com",
-        role: "teacher"
+        email: "smith5w@gmail.com"
       };
       let res = await supertest(server)
         .post("/register")
         .send(newUser);
 
+<<<<<<< HEAD
       expect(res.body.saved.username).toEqual("Msmith");
+=======
+      expect(res.body.user.username).toEqual("Msmith");
+>>>>>>> ae85c627a8430bc35912efac826e23154b21f856
     });
   });
 
