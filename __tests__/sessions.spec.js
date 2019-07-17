@@ -145,7 +145,7 @@ describe("sessions helpers", () => {
           grade: "1st",
           id: "1",
           lastname: "Smith",
-         subject: "Math",
+          lessonName: "Math",
           score: 100
         }
       ];
