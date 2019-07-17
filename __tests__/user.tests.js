@@ -178,8 +178,7 @@ describe('updateUser', () => {
             lastname: "Jones",
             username: "lijones",
             password: "test",
-            email: "jones@gmail.com",
-            role: "teacher"
+            email: "jones@gmail.com"
         });
 
         const updatedUser = {
@@ -187,8 +186,7 @@ describe('updateUser', () => {
             lastname: "Jo",
             username: "lijones",
             password: "test",
-            email: "jones@gmail.com",
-            role: "teacher"
+            email: "jones@gmail.com"
         }
 
         let response = await request(server).put("/users/1").send(updatedUser);
@@ -202,8 +200,7 @@ describe('updateUser', () => {
             lastname: "Jones",
             username: "lijones",
             password: "test",
-            email: "jones@gmail.com",
-            role: "teacher"
+            email: "jones@gmail.com"
         });
 
         const updatedUser = {
@@ -212,8 +209,7 @@ describe('updateUser', () => {
             lastname: "Jo",
             username: "lijones",
             password: "test",
-            email: "jones@gmail.com",
-            role: "teacher"
+            email: "jones@gmail.com"
         }
 
         let response = await request(server).put("/users/1").send(updatedUser);
@@ -261,13 +257,14 @@ describe('deleteUser', () => {
     });
 
     it('should return 200', async () => {
-        await Users.addUser({ id: "1",
-        firstname: "Lisa",
-        lastname: "Jones",
-        username: "lijones",
-        password: "test",
-        email: "jones@gmail.com",
-        role: "teacher" });
+        await Users.addUser({ 
+            id: "1",
+            firstname: "Lisa",
+            lastname: "Jones",
+            username: "lijones",
+            password: "test",
+            email: "jones@gmail.com"
+        });
 
         let response = await request(server).delete('/users/1')
         expect(response.status).toBe(200);

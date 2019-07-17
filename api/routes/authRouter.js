@@ -15,15 +15,20 @@ router.post("/register", (req, res) => {
     !user.lastname ||
     !user.username ||
     !user.password ||
-    !user.email ||
-    !user.role
+    !user.email
   ) {
     return res.status(422).json({ message: "Please fill out missing fields!" });
   } else {
     addUser(user)
       .then(saved => {
+        // we want to have an option to access restricted routes right after registration
         const token = generateToken(saved);
-        res.status(201).json({saved, token});
+
+        // we don't want to send back to user some info like hashed password or ref_id which we're using only internally
+        let { id, firstname, lastname, username, email, role } = saved;
+        const myUser = { id, firstname, lastname, username, email, role };
+
+        res.status(201).json({user: myUser, token});
       })
       .catch(error => {
         res.status(500).json(error);
@@ -43,9 +48,14 @@ router.post("/login", (req, res) => {
       .then(user => {
         if (user && bcrypt.compareSync(password, user.password)) {
           const token = generateToken(user);
+
+          // we don't want to send back to user some info like hashed password or ref_id which we're using only internally
+          let { id, firstname, lastname, username, email, role } = user;
+          const myUser = { id, firstname, lastname,username, email, role };
+
           res.status(200).json({
-            message: `Welcome ${user.username}!`,
-            token, user
+            message: `Welcome ${username}!`,
+            token, user: myUser
           });
         } else {
           res.status(401).json({ message: "Invalid Credentials" });
