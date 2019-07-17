@@ -50,8 +50,7 @@ _**Pitch:**_ As a teacher, it can be hard to control the noise level in your cla
     "lastname": "Turing",
     "username": "Enigma",
     "password": "super%password",
-    "email": "turing@email.me",
-    "role": "teacher"
+    "email": "turing@email.me"
 }
 ```
 **Returns:** a user object and the authentication token.
@@ -81,7 +80,7 @@ Example:
 ```js
 {
     "username": "Enigma",
-	"password": "super%password"
+    "password": "super%password"
 }
 ```
 
