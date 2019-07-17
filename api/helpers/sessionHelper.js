@@ -51,8 +51,8 @@ function removeSessions(id) {
 
 function getScore(SessId) {
   return db("sessions as s")
-    .join("users as u", "u.id", "s.user_id")
-    .join("class as c", "c.id", "s.class_id")
+    .join("users as u", "u.ref_id", "s.user_id")
+    .join("class as c", "c.ref_id", "s.class_id")
     .select(
       "u.firstname",
       "u.lastname",
