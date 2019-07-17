@@ -6,6 +6,7 @@ module.exports = {
     getUserById,
     getUserByFilter,
     getSessionsByUserId,
+    getClassesByUserId,
     addUser,
     updateUser,
     deleteUser
@@ -45,11 +46,28 @@ function getSessionsByUserId(user_id) {
             "u.lastname",
             "s.date",
             "s.score",
-            "s.lessonName as subject",
-            "c.name as class_name",
+            "s.lessonName",
+            "c.name",
             "c.grade"
         )
         .where("u.id", user_id);
+}
+
+// GET classes by user id
+// returns UNIQUE classes which had sessions with particular user, NOT ALL CLASSES FROM THE DB!!!
+
+
+function getClassesByUserId(user_id) {
+    return db("users as u")
+    .join("sessions as s", "u.ref_id", "s.user_id")
+    .join("class as c", "s.class_id", "c.ref_id")
+    .select(
+        "c.id",
+        "c.name",
+        "c.grade"
+    )
+    .distinct()
+    .where("u.id", user_id);
 }
 
 // ADD user to the db, id is randomly created with uuid
