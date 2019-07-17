@@ -5,8 +5,7 @@ const {
   findSessions,
   findSessionsById,
   addSessions,
-  removeSessions,
-  getScore
+  removeSessions
 } = require("../api/helpers/sessionHelper.js");
 
 describe("sessions helpers", () => {
@@ -59,30 +58,110 @@ describe("sessions helpers", () => {
   //GET sessions By id
   describe("get Sessions By ID", () => {
     it("finds session by id", async () => {
-      await db("sessions").insert([
+      const user = [
         {
           id: "1",
-          date: "06/20/19",
-          score: 80,
-          lessonName: "Grammar"
-        },
+          ref_id: 1,
+          firstname: "Jon",
+          lastname: "Smith",
+          username: "kSmith",
+          password: "test",
+          email: "Jsmith@gmail.com"
+        }
+      ];
+
+      await db("users").insert(user);
+
+      const classes = [
         {
-          id: "2",
-          date: "06/21/19",
-          score: 75,
+          id: "1",
+          ref_id: 1,
+          name: "Ms. Angela's",
+          grade: "1st"
+        }
+      ];
+
+      await db("class").insert(classes);
+
+      const sessions = [
+        {
+          id: "1",
+          user_id: 1,
+          class_id: 1,
+          date: "",
+          score: "100",
           lessonName: "Math"
         }
-      ]);
+      ];
 
-      const session = await findSessionsById("2");
+      await db("sessions").insert(sessions);
+      const session = await findSessionsById("1");
 
-      expect(session.lessonName).toEqual("Math");
+      expect(session[0].lessonName).toEqual("Math");
     });
 
-    it("returns undefined of invalid id", async () => {
-      const session = await findSessionsById("2");
+    it("returns additional info for class and users", async () => {
+      const user = [
+        {
+          id: "1",
+          ref_id: 1,
+          firstname: "Jon",
+          lastname: "Smith",
+          username: "kSmith",
+          password: "test",
+          email: "Jsmith@gmail.com"
+        }
+      ];
 
-      expect(session).toBeUndefined();
+      await db("users").insert(user);
+
+      const classes = [
+        {
+          id: "1",
+          ref_id: 1,
+          name: "Ms. Angela's",
+          grade: "1st"
+        }
+      ];
+
+      await db("class").insert(classes);
+
+      const sessions = [
+        {
+          id: "1",
+          user_id: 1,
+          class_id: 1,
+          date: "",
+          score: "100",
+          lessonName: "Math"
+        }
+      ];
+
+      const body = [
+        {
+          className: "Ms. Angela's",
+          date: "",
+          firstname: "Jon",
+          grade: "1st",
+          id: "1",
+          lastname: "Smith",
+          lessonName: "Math",
+          score: 100
+        }
+      ];
+
+      await db("sessions").insert(sessions);
+
+      const res = await supertest(server).get("/sessions/1");
+      expect(res.status).toBe(200);
+      expect(res.body).toHaveLength(1);
+      expect(res.body).toStrictEqual(body);
+    });
+
+    it("returns empty array if no sessions stored", async () => {
+      const session = await findSessionsById(1);
+
+      expect(session).toEqual([]);
     });
   });
 
@@ -113,22 +192,6 @@ describe("sessions helpers", () => {
         .post("/sessions")
         .send(session);
       expect(res.status).toBe(400);
-    });
-
-    it("req body should have list of sessions", async () => {
-      const session = {
-        id: "1",
-        date: "06/20/19",
-        score: 80,
-        lessonName: "Grammar",
-        class_id: null,
-        user_id: null
-      };
-
-      const res = await supertest(server)
-        .post("/sessions")
-        .send(session);
-      expect(res.body).toStrictEqual(session);
     });
   });
 
@@ -221,27 +284,10 @@ describe("sessions helpers", () => {
         lessonName: "Math"
       });
 
-      await removeSessions("1");
+      await removeSessions("2");
+      const allSessions = await findSessions();
 
-      const deletedsession = await findSessionsById("1");
-      const remained = await findSessionsById("2");
-      expect(deletedsession).toBeUndefined();
-      expect(remained.lessonName).toBe("Math");
-    });
-  });
-
-  //SESSIONS/:ID/SCORE
-  describe("GET session/:id/score", () => {
-    it("should return 200 status upon success", async () => {
-      const res = await supertest(server).get("/sessions/1/score");
-
-      expect(res.status).toBe(200);
-    });
-
-    it("returns empty array if no sessions stored", async () => {
-      const score = await getScore("2");
-
-      expect(score).toEqual([]);
+      expect(allSessions).toHaveLength(1);
     });
   });
 });

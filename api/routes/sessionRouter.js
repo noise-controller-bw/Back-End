@@ -4,8 +4,7 @@ const {
   findSessionsById,
   addSessions,
   removeSessions,
-  updateSessions,
-  getScore
+  updateSessions
 } = require("../helpers");
 
 router.get("/", async (req, res) => {
@@ -90,24 +89,6 @@ router.delete("/:id", async (req, res) => {
     res
       .status(500)
       .json({ message: "We ran into an error removing the session", error });
-  }
-});
-
-router.get("/:id/score", async (req, res) => {
-  try {
-    const score = await getScore(req.params.id.toString());
-    if (score) {
-      res.status(200).json(score);
-    } else {
-      res.status(404).json({ message: "The session could not be found" });
-    }
-  } catch (error) {
-    // log error to server
-    console.log(error);
-    res.status(500).json({
-      message: "Error getting the score for the session",
-      error
-    });
   }
 });
 
