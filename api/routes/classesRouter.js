@@ -139,6 +139,7 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+//CLASSES/ID/SCORE
 router.get("/:id/score", (req, res) => {
   getClassScore(req.params.id.toString())
     .then(scores => {

@@ -248,6 +248,15 @@ describe("getClassById", () => {
           username: "kSmith",
           password: "test",
           email: "Jsmith@gmail.com"
+        },
+        {
+          id: "2",
+          ref_id: 2,
+          firstname: "Jan",
+          lastname: "Smithson",
+          username: "JSmith",
+          password: "test",
+          email: "Jansmith@gmail.com"
         }
       ];
 
@@ -270,7 +279,23 @@ describe("getClassById", () => {
           user_id: 1,
           class_id: 1,
           date: "",
+          score: 90,
+          lessonName: "Reading"
+        },
+        {
+          id: "2",
+          user_id: 2,
+          class_id: 1,
+          date: "",
           score: 100,
+          lessonName: "Science"
+        },
+        {
+          id: "3",
+          user_id: 1,
+          class_id: 1,
+          date: "",
+          score: 80,
           lessonName: "Math"
         }
       ];
@@ -278,7 +303,8 @@ describe("getClassById", () => {
       await db("sessions").insert(sessions);
       const score = await Classes.getClassScore("1");
 
-      expect(score[0].score).toEqual(100);
+      expect(score[0].score).toEqual(90);
+      expect(score).toHaveLength(3);
     });
 
     it("returns additional info for class and users", async () => {

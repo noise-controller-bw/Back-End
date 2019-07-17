@@ -49,9 +49,9 @@ function removeClass(id) {
 }
 
 function getClassScore(id) {
-  return db("sessions as s")
-    .join("class as c", "c.ref_id", "s.class_id")
-    .join("users as u", "u.ref_id", "s.user_id")
+  return db("class as c")
+    .join("sessions as s", "c.ref_id", "s.class_id")
+    .join("users as u", "s.user_id", "u.ref_id")
     .select(
       "s.id",
       "c.name as className",
@@ -60,5 +60,5 @@ function getClassScore(id) {
       "s.date",
       "s.score"
     )
-    .where("s.id", id);
+    .where("c.id", id);
 }
