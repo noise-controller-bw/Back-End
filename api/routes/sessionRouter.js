@@ -15,7 +15,7 @@ router.get("/", async (req, res) => {
   } catch (error) {
     res
       .status(500)
-      .json({ message: "We ran into an error retrieving the sessions" });
+      .json({ message: "We ran into an error retrieving the sessions", error });
   }
 });
 
@@ -30,7 +30,7 @@ router.get("/:id", async (req, res) => {
   } catch (error) {
     res
       .status(500)
-      .json({ message: "We ran into an error retrieving the session" });
+      .json({ message: "We ran into an error retrieving the session", error });
   }
 });
 
@@ -48,7 +48,7 @@ router.post("/", async (req, res) => {
     } catch (error) {
       res
         .status(500)
-        .json({ message: "We ran into an error creating the session" });
+        .json({ message: "We ran into an error creating the session", error });
     }
   }
 });
@@ -89,7 +89,7 @@ router.delete("/:id", async (req, res) => {
   } catch (error) {
     res
       .status(500)
-      .json({ message: "We ran into an error removing the session" });
+      .json({ message: "We ran into an error removing the session", error });
   }
 });
 
@@ -105,7 +105,8 @@ router.get("/:id/score", async (req, res) => {
     // log error to server
     console.log(error);
     res.status(500).json({
-      message: "Error getting the score for the session"
+      message: "Error getting the score for the session",
+      error
     });
   }
 });
