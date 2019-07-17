@@ -3,6 +3,7 @@ const {
   getUserById,
   getUserByFilter,
   getSessionsByUserId,
+  // getClasses by user id
   addUser,
   deleteUser,
   updateUser
