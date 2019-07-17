@@ -3,7 +3,8 @@ const {
   getClassById,
   addClass,
   updateClass,
-  removeClass
+  removeClass,
+  getClassScore
 } = require("../helpers");
 
 const router = require("express").Router();
@@ -136,6 +137,20 @@ router.delete("/:id", async (req, res) => {
       .status(500)
       .json({ message: "We ran into an error removing the class" });
   }
+});
+
+router.get("/:id/score", (req, res) => {
+  getClassScore(req.params.id.toString())
+    .then(scores => {
+      if (scores) {
+        return res.status(200).json(scores);
+      } else {
+        res.status(400).send({ message: "Scores for this class is not found" });
+      }
+    })
+    .catch(err => {
+      return res.status(500).send(err);
+    });
 });
 
 module.exports = router;
