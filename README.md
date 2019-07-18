@@ -12,7 +12,7 @@
         - [Register](#Register)
         - [Login](#Login)
    - [Users](#Users)
-        - [GET] all users(#GET-all-users)
+        - [GET all users](#GET-all-users)
         - [GET] user by ID(#GET-user-by-id)
         - [GET_Sessions_By_User_Id](#GET_Sessions_By_User_Id)
         - [GET /users/:id/classes](#GetClassesByUserId)
