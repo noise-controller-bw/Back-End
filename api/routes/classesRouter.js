@@ -4,7 +4,8 @@ const {
   addClass,
   updateClass,
   removeClass,
-  getClassScore
+  getClassSession,
+  getClassUsers
 } = require("../helpers");
 
 const router = require("express").Router();
@@ -140,8 +141,8 @@ router.delete("/:id", async (req, res) => {
 });
 
 //CLASSES/ID/SCORE
-router.get("/:id/score", (req, res) => {
-  getClassScore(req.params.id.toString())
+router.get("/:id/sessions", (req, res) => {
+  getClassSession(req.params.id.toString())
     .then(scores => {
       if (scores) {
         return res.status(200).json(scores);
@@ -154,4 +155,18 @@ router.get("/:id/score", (req, res) => {
     });
 });
 
+//CLASSES/ID/USERS
+router.get("/:id/users", (req, res) => {
+  getClassUsers(req.params.id.toString())
+    .then(users => {
+      if (users) {
+        return res.status(200).json(users);
+      } else {
+        res.status(400).send({ message: "Users for this class is not found" });
+      }
+    })
+    .catch(err => {
+      return res.status(500).send(err);
+    });
+});
 module.exports = router;

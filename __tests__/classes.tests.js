@@ -223,7 +223,7 @@ describe("getClassById", () => {
     });
   });
 
-  //GET CLASS SCORE
+  //GET CLASS SESSIONS
   describe("get Class Score", () => {
     beforeEach(async () => {
       //truncate clears db very fast, used in seeding
@@ -233,7 +233,7 @@ describe("getClassById", () => {
     });
 
     it("get /classes/id/score returns 200", async () => {
-      const res = await request(server).get("/classes/id/score");
+      const res = await request(server).get("/classes/id/sessions");
 
       expect(res.status).toBe(200);
       expect(res.body).toEqual([]);
@@ -301,7 +301,7 @@ describe("getClassById", () => {
       ];
 
       await db("sessions").insert(sessions);
-      const score = await Classes.getClassScore("1");
+      const score = await Classes.getClassSession("1");
 
       expect(score[0].score).toEqual(90);
       expect(score).toHaveLength(3);
@@ -347,9 +347,8 @@ describe("getClassById", () => {
       const body = [
         {
           id: "1",
-          className: "Ms. Angela's",
-          lessonName: "Math",
-          grade: "1st",
+          firstname: "Jon",
+          lastname: "Smith",
           date: "",
           score: 100
         }
@@ -357,14 +356,14 @@ describe("getClassById", () => {
 
       await db("sessions").insert(sessions);
 
-      const res = await request(server).get("/classes/1/score");
+      const res = await request(server).get("/classes/1/sessions");
       expect(res.status).toBe(200);
       expect(res.body).toHaveLength(1);
       expect(res.body).toStrictEqual(body);
     });
 
     it("returns empty array if no score stored", async () => {
-      const score = await Classes.getClassScore(1);
+      const score = await Classes.getClassSession(1);
 
       expect(score).toEqual([]);
     });
