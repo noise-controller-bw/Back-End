@@ -142,9 +142,9 @@ router.delete("/:id", async (req, res) => {
 //CLASSES/ID/SESSION
 router.get("/:id/sessions", (req, res) => {
   getClassSession(req.params.id.toString())
-    .then(scores => {
-      if (scores) {
-        return res.status(200).json(scores);
+    .then(sess => {
+      if (sess) {
+        return res.status(200).json(sess);
       } else {
         res.status(400).send({ message: "Scores for this class is not found" });
       }

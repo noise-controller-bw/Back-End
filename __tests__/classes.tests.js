@@ -224,7 +224,7 @@ describe("getClassById", () => {
   });
 
   //GET CLASS SESSIONS
-  describe("get Class Score", () => {
+  describe("get Class Sessions", () => {
     beforeEach(async () => {
       //truncate clears db very fast, used in seeding
       await db("sessions").truncate();
@@ -238,7 +238,7 @@ describe("getClassById", () => {
       expect(res.status).toBe(200);
       expect(res.body).toEqual([]);
     });
-    it("finds score info by class id", async () => {
+    it("finds sessions info by class id", async () => {
       const user = [
         {
           id: "1",
@@ -363,7 +363,7 @@ describe("getClassById", () => {
       expect(res.body).toStrictEqual(body);
     });
 
-    it("returns empty array if no score stored", async () => {
+    it("returns empty array if no session stored", async () => {
       const score = await Classes.getClassSession(1);
 
       expect(score).toEqual([]);
