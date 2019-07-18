@@ -66,7 +66,7 @@ router.get("/:id", (req, res) => {
       }
     })
     .catch(err => {
-        return res.status(500).send(err);
+      return res.status(500).send(err);
     });
 });
 
@@ -88,17 +88,17 @@ RETURNS an array of session objects
 */
 
 router.get("/:id/sessions", (req, res) => {
-    getSessionsByUserId(req.params.id.toString())
-        .then(sessions => {
-            if(sessions) {
-                return res.status(200).json(sessions);
-            } else {
-                res.status(400).send({ message: "Sessions for this user not found" });
-            }
-        })
-        .catch(err => {
-            return res.status(500).send(err);
-        });
+  getSessionsByUserId(req.params.id.toString())
+    .then(sessions => {
+      if (sessions) {
+        return res.status(200).json(sessions);
+      } else {
+        res.status(400).send({ message: "Sessions for this user not found" });
+      }
+    })
+    .catch(err => {
+      return res.status(500).send(err);
+    });
 });
 
 /*
@@ -114,17 +114,17 @@ RETURNS an array of unique classes objects, classes which had sessions with part
 */
 
 router.get("/:id/classes", (req, res) => {
-    getClassesByUserId(req.params.id.toString())
-        .then(classes => {
-            if(classes) {
-                return res.status(200).json(classes);
-            } else {
-                res.status(400).send({ message: "Classes for this user not found" });
-            }
-        })
-        .catch(err => {
-            return res.status(500).send(err);
-        });
+  getClassesByUserId(req.params.id.toString())
+    .then(classes => {
+      if (classes) {
+        return res.status(200).json(classes);
+      } else {
+        res.status(400).send({ message: "Classes for this user not found" });
+      }
+    })
+    .catch(err => {
+      return res.status(500).send(err);
+    });
 });
 
 /* POST

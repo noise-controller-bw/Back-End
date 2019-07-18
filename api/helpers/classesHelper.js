@@ -6,7 +6,8 @@ module.exports = {
   getClassById,
   addClass,
   updateClass,
-  removeClass
+  removeClass,
+  getClassSession
 };
 
 // GET ALL classes
@@ -45,4 +46,19 @@ function removeClass(id) {
   return db("class")
     .where({ id })
     .del();
+}
+
+function getClassSession(id) {
+  return db("class as c")
+    .join("sessions as s", "c.ref_id", "s.class_id")
+    .join("users as u", "s.user_id", "u.ref_id")
+    .select(
+      "s.id",
+      "u.firstname",
+      "u.lastname",
+      "s.lessonName ",
+      "s.date",
+      "s.score"
+    )
+    .where("c.id", id);
 }

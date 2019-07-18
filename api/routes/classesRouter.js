@@ -3,7 +3,8 @@ const {
   getClassById,
   addClass,
   updateClass,
-  removeClass
+  removeClass,
+  getClassSession
 } = require("../helpers");
 
 const router = require("express").Router();
@@ -136,6 +137,23 @@ router.delete("/:id", async (req, res) => {
       .status(500)
       .json({ message: "We ran into an error removing the class" });
   }
+});
+
+//CLASSES/ID/SESSIONS
+router.get("/:id/sessions", (req, res) => {
+  getClassSession(req.params.id.toString())
+    .then(sess => {
+      if (sess) {
+        return res.status(200).json(sess);
+      } else {
+        res
+          .status(400)
+          .send({ message: "Sessions for this class is not found" });
+      }
+    })
+    .catch(err => {
+      return res.status(500).send(err);
+    });
 });
 
 module.exports = router;
