@@ -110,7 +110,7 @@ Example:
 
 ## Users
 
-### [GET /users] all users
+### [GET] all users
 
 ### [GET /users/:id] user by id
 
