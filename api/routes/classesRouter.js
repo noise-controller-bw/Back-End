@@ -4,7 +4,8 @@ const {
   addClass,
   updateClass,
   removeClass,
-  getClassSession
+  getClassSession,
+  getClassUsers
 } = require("../helpers");
 
 const router = require("express").Router();
@@ -149,6 +150,21 @@ router.get("/:id/sessions", (req, res) => {
         res
           .status(400)
           .send({ message: "Sessions for this class is not found" });
+      }
+    })
+    .catch(err => {
+      return res.status(500).send(err);
+    });
+});
+
+//CLASSES/ID/USERS
+router.get("/:id/users", (req, res) => {
+  getClassUsers(req.params.id.toString())
+    .then(users => {
+      if (users) {
+        return res.status(200).json(users);
+      } else {
+        res.status(400).send({ message: "Users for this class is not found" });
       }
     })
     .catch(err => {
