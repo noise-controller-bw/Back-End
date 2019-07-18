@@ -12,6 +12,13 @@
         - [Register](#Register)
         - [Login](#Login)
    - [Users](#Users)
+        - [GET all users](#GET-all-users)
+        - [GET user by id](#GET-user-by-id)
+        - [GET_Sessions_By_User_Id](#GET_Sessions_By_User_Id)
+        - [GET /users/:id/classes](#GetClassesByUserId)
+        - [POST /users](#AddNewUser)
+        - [DELETE /users/:id](#DeleteUser)
+        - [PUT /users/:id](#EditUser)
    - [Sessions](#Sessions)
    - [Classes](#Classes)
 
@@ -59,7 +66,7 @@ Example:
 ```js
 {
     "user": {
-        "id": "774a744d-6cb3-4a41-b45d-0ef94b9d2af7", // use it for routes
+        "id": "774a744d-6cb3-4a41-b45d-0ef94b9d2af7",
         "firstname": "Alan",
         "lastname": "Turing",
         "username": "Enigma",
@@ -102,6 +109,22 @@ Example:
 ```
 
 ## Users
+
+### [GET] all users
+**/users**
+
+### [GET] user by id
+**/users/:id**
+
+### [GET /users/:id/sessions] all sessions of the user (by user id)
+
+### [GET /users/:id/classes] all classes of the user (by user id)
+
+### [POST /users] create new user
+
+### [DELETE /users/:id] delete user
+
+### [PUT /users/:id] edit user information
 
 ## Sessions
 

@@ -42,7 +42,14 @@ describe('GET /users', () => {
 
         const res = await request(server).get('/users');
         expect(res.status).toBe(200);
-        expect(res.body).toEqual(user);
+        expect(res.body).toEqual([{
+            id: "1",
+            firstname: "Lisa",
+            lastname: "Jones",
+            username: "lijones",
+            email: "jones@gmail.com",
+            role: "teacher"
+        }]);
     });
 });
 
@@ -328,7 +335,6 @@ describe('addUser', () => {
     it('should return the new user on insert', async () => {
         const user = await Users.addUser({ 
             id: "1",
-            ref_id: 1,
             firstname: "Lisa",
             lastname: "Jones",
             username: "lijones",
@@ -339,11 +345,9 @@ describe('addUser', () => {
 
         expect(user).toEqual({ 
             id: "1",
-            ref_id: 1,
             firstname: "Lisa",
             lastname: "Jones",
             username: "lijones",
-            password: "test",
             email: "jones@gmail.com",
             role: "teacher" 
         });
@@ -487,7 +491,4 @@ describe('deleteUser', () => {
         let response = await request(server).delete('/users/1')
         expect(response.body).toEqual({ message: 'The user could not be found' });
     });
-
-  
-
 });
