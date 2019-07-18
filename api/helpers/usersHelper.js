@@ -9,8 +9,7 @@ module.exports = {
   getClassesByUserId,
   addUser,
   updateUser,
-  deleteUser,
-  getUserScores
+  deleteUser
 };
 
 // helpers functions
