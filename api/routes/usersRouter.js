@@ -6,8 +6,7 @@ const {
   getClassesByUserId,
   addUser,
   deleteUser,
-  updateUser,
-  getUserScores
+  updateUser
 } = require("../helpers");
 const router = require("express").Router();
 
@@ -231,21 +230,6 @@ router.put("/:id", async (req, res) => {
       error
     });
   }
-});
-
-//GET SCORES FOR USER
-router.get("/:id/score", (req, res) => {
-  getUserScores(req.params.id.toString())
-    .then(scores => {
-      if (scores) {
-        return res.status(200).json(scores);
-      } else {
-        res.status(400).send({ message: "Scores for this user is not found" });
-      }
-    })
-    .catch(err => {
-      return res.status(500).send(err);
-    });
 });
 
 module.exports = router;

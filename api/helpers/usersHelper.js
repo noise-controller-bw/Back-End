@@ -94,21 +94,4 @@ function deleteUser(id) {
     .del();
 }
 
-//GET USER SCORES
-function getUserScores(id) {
-  return db("users as u")
-    .join("sessions as s", "u.ref_id", "s.user_id")
-    .join("class as c", "s.class_id", "c.ref_id")
-    .select(
-      "s.id",
-      "u.firstname",
-      "u.lastname",
-      "c.name as className",
-      "c.grade",
-      "s.date",
-      "s.score"
-    )
-    .where("u.id", id);
-}
-
 //@TO-DO: GET all SESSIONS by userId
