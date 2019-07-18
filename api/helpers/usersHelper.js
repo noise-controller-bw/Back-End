@@ -44,8 +44,6 @@ function getSessionsByUserId(user_id) {
     .join("class as c", "s.class_id", "c.ref_id")
     .select(
       "s.id",
-      "u.firstname",
-      "u.lastname",
       "s.date",
       "s.score",
       "s.lessonName",
