@@ -349,6 +349,7 @@ describe("getClassById", () => {
           id: "1",
           firstname: "Jon",
           lastname: "Smith",
+          lessonName: "Math",
           date: "",
           score: 100
         }
