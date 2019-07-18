@@ -13,7 +13,7 @@
         - [Login](#Login)
    - [Users](#Users)
         - [GET all users](#GET-all-users)
-        - [GET] user by ID(#GET-user-by-id)
+        - [GET user by id](#GET-user-by-id)
         - [GET_Sessions_By_User_Id](#GET_Sessions_By_User_Id)
         - [GET /users/:id/classes](#GetClassesByUserId)
         - [POST /users](#AddNewUser)
@@ -111,8 +111,10 @@ Example:
 ## Users
 
 ### [GET] all users
+**/users**
 
-### [GET /users/:id] user by id
+### [GET] user by id
+**/users/:id**
 
 ### [GET /users/:id/sessions] all sessions of the user (by user id)
 
