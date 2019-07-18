@@ -369,4 +369,149 @@ describe("getClassById", () => {
       expect(score).toEqual([]);
     });
   });
+
+  //GET CLASS USERS
+  describe("get Class Users", () => {
+    beforeEach(async () => {
+      //truncate clears db very fast, used in seeding
+      await db("sessions").truncate();
+      await db("class").truncate();
+      await db("users").truncate();
+    });
+
+    it("get /classes/id/users returns 200", async () => {
+      const res = await request(server).get("/classes/id/users");
+
+      expect(res.status).toBe(200);
+      expect(res.body).toEqual([]);
+    });
+    it("finds users info by class id", async () => {
+      const user = [
+        {
+          id: "1",
+          ref_id: 1,
+          firstname: "Jon",
+          lastname: "Smith",
+          username: "kSmith",
+          password: "test",
+          email: "Jsmith@gmail.com"
+        },
+        {
+          id: "2",
+          ref_id: 2,
+          firstname: "Jan",
+          lastname: "Smithson",
+          username: "JSmith",
+          password: "test",
+          email: "Jansmith@gmail.com"
+        }
+      ];
+
+      await db("users").insert(user);
+
+      const classes = [
+        {
+          id: "1",
+          ref_id: 1,
+          name: "Ms. Angela's",
+          grade: "1st"
+        }
+      ];
+
+      await db("class").insert(classes);
+
+      const sessions = [
+        {
+          id: "1",
+          user_id: 1,
+          class_id: 1,
+          date: "",
+          score: 90,
+          lessonName: "Reading"
+        },
+        {
+          id: "2",
+          user_id: 2,
+          class_id: 1,
+          date: "",
+          score: 100,
+          lessonName: "Science"
+        },
+        {
+          id: "3",
+          user_id: 1,
+          class_id: 1,
+          date: "",
+          score: 80,
+          lessonName: "Math"
+        }
+      ];
+
+      await db("sessions").insert(sessions);
+      const users = await Classes.getClassUsers("1");
+
+      expect(users[0].firstname).toEqual("Jon");
+      expect(users).toHaveLength(2);
+    });
+
+    it("returns additional info for class and users", async () => {
+      const user = [
+        {
+          id: "1",
+          ref_id: 1,
+          firstname: "Jon",
+          lastname: "Smith",
+          username: "kSmith",
+          password: "test",
+          email: "Jsmith@gmail.com"
+        }
+      ];
+
+      await db("users").insert(user);
+
+      const classes = [
+        {
+          id: "1",
+          ref_id: 1,
+          name: "Ms. Angela's",
+          grade: "1st"
+        }
+      ];
+
+      await db("class").insert(classes);
+
+      const sessions = [
+        {
+          id: "1",
+          user_id: 1,
+          class_id: 1,
+          date: "",
+          score: "100",
+          lessonName: "Math"
+        }
+      ];
+
+      const body = [
+        {
+          id: "1",
+          firstname: "Jon",
+          lastname: "Smith",
+          email: "Jsmith@gmail.com"
+        }
+      ];
+
+      await db("sessions").insert(sessions);
+
+      const res = await request(server).get("/classes/1/users");
+      expect(res.status).toBe(200);
+      expect(res.body).toHaveLength(1);
+      expect(res.body).toStrictEqual(body);
+    });
+
+    it("returns empty array if no session stored", async () => {
+      const score = await Classes.getClassUsers(1);
+
+      expect(score).toEqual([]);
+    });
+  });
 });
