@@ -232,7 +232,7 @@ describe("getClassById", () => {
       await db("users").truncate();
     });
 
-    it("get /classes/id/score returns 200", async () => {
+    it("get /classes/id/sesssions returns 200", async () => {
       const res = await request(server).get("/classes/id/sessions");
 
       expect(res.status).toBe(200);
