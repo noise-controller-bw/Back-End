@@ -20,7 +20,6 @@ RETURNS an array of users
     firstname: "Lisa",
     lastname: "Jones",
     username: "lijones",
-    password: "test",
     email: "jones@gmail.com",
     role: "teacher"
 }
@@ -50,7 +49,6 @@ RETURNS user object
     firstname: "Lisa",
     lastname: "Jones",
     username: "lijones",
-    password: "test",
     email: "jones@gmail.com",
     role: "teacher"
 }
@@ -136,18 +134,17 @@ RETURNS user object
     firstname: "Lisa",
     lastname: "Jones",
     username: "lijones",
-    password: "test",
     email: "jones@gmail.com",
     role: "teacher"
 }
 */
 
 router.post("/", (req, res) => {
-  const { firstname, lastname, username, password, email, role } = req.body;
+  const { firstname, lastname, username, password, email } = req.body;
   if (!firstname || !lastname || !username || !password || !email) {
     return res.status(422).json({ error: "fill out required fields!" });
   } else {
-    const newUser = { firstname, lastname, username, password, email, role };
+    const newUser = { firstname, lastname, username, password, email };
     addUser(newUser)
       .then(users => {
         res.status(201).json(users);
@@ -201,9 +198,7 @@ RETURNS message (success or failure) and updatedUser object
         "firstname": "Liz",
         "lastname": "Jo",
         "username": "lijones",
-        "password": "test",
         "email": "jones@gmail.com",
-        "role": "teacher"
     }
 }
 @failure_object = {

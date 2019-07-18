@@ -17,7 +17,7 @@ module.exports = {
 // GET ALL users
 // Must return all users or empty array
 function getAllUsers() {
-  return db("users");
+  return db("users").select("id", "firstname", "lastname", "username", "email", "role");
 }
 
 // GET user by ID
@@ -25,7 +25,8 @@ function getAllUsers() {
 function getUserById(id) {
   return db("users")
     .where({ id })
-    .first();
+    .first()
+    .select("id", "firstname", "lastname", "username", "email", "role");
 }
 
 // GET user by FILTER
@@ -33,7 +34,8 @@ function getUserById(id) {
 function getUserByFilter(filter) {
   return db("users")
     .where(filter)
-    .first();
+    .first()
+    .select("id", "firstname", "lastname", "username", "email", "role");
 }
 
 // GET sessions by USER ID
@@ -90,5 +92,3 @@ function deleteUser(id) {
     .where({ id })
     .del();
 }
-
-//@TO-DO: GET all SESSIONS by userId
