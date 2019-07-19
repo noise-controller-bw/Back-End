@@ -33,6 +33,30 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// router.post("/", async (req, res) => {
+//   const { date, score, lessonName } = req.body;
+
+//   if (!date || !score || !lessonName) {
+//     res
+//       .status(400)
+//       .json({ message: "Please provided required fields to create sessions" });
+//   } else {
+//     const newSess = { date, score, lessonName };
+//     addSessions(newSess)
+//       .then(sess => {
+//         res
+//           .status(201)
+//           .json({ message: "sessions was added succesfully", sess: newSess });
+//       })
+//       .catch(error => {
+//         res.status(500).json({
+//           message: "We ran into an error creating the session",
+//           error
+//         });
+//       });
+//   }
+// });
+
 router.post("/", async (req, res) => {
   const sessions = req.body;
 
@@ -42,8 +66,11 @@ router.post("/", async (req, res) => {
       .json({ message: "Please provided required fields to create sessions" });
   } else {
     try {
+
       const inserted = await addSessions(sessions);
-      res.status(201).json(inserted);
+      res
+        .status(201)
+        .json({ message: "sessions was added succesfully", inserted });
     } catch (error) {
       res
         .status(500)

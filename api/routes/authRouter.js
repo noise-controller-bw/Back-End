@@ -28,7 +28,7 @@ router.post("/register", (req, res) => {
         let { id, firstname, lastname, username, email, role } = saved;
         const myUser = { id, firstname, lastname, username, email, role };
 
-        res.status(201).json({user: myUser, token});
+        res.status(201).json({ user: myUser, token });
       })
       .catch(error => {
         res.status(500).json(error);
@@ -51,11 +51,12 @@ router.post("/login", (req, res) => {
 
           // we don't want to send back to user some info like hashed password or ref_id which we're using only internally
           let { id, firstname, lastname, username, email, role } = user;
-          const myUser = { id, firstname, lastname,username, email, role };
+          const myUser = { id, firstname, lastname, username, email, role };
 
           res.status(200).json({
             message: `Welcome ${username}!`,
-            token, user: myUser
+            token,
+            user: myUser
           });
         } else {
           res.status(401).json({ message: "Invalid Credentials" });

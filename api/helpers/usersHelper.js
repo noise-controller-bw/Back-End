@@ -17,7 +17,14 @@ module.exports = {
 // GET ALL users
 // Must return all users or empty array
 function getAllUsers() {
-  return db("users").select("id", "firstname", "lastname", "username", "email", "role");
+  return db("users").select(
+    "id",
+    "firstname",
+    "lastname",
+    "username",
+    "email",
+    "role"
+  );
 }
 
 // GET user by ID
@@ -44,14 +51,7 @@ function getSessionsByUserId(user_id) {
   return db("users as u")
     .join("sessions as s", "u.ref_id", "s.user_id")
     .join("class as c", "s.class_id", "c.ref_id")
-    .select(
-      "s.id",
-      "s.date",
-      "s.score",
-      "s.lessonName",
-      "c.name",
-      "c.grade"
-    )
+    .select("s.id", "s.date", "s.score", "s.lessonName", "c.name", "c.grade")
     .where("u.id", user_id);
 }
 
