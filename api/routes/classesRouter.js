@@ -10,6 +10,7 @@ const {
 
 const router = require("express").Router();
 
+const { checkRole } = require("../../MiddleWare/checkRole.js");
 /*
 GET ROUTE
 TODO: Add middleware to ensure user is logged in
@@ -123,7 +124,7 @@ ROUTE = '/classes/:id'
 
 */
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", checkRole("Admin"), async (req, res) => {
   try {
     const count = await removeClass(req.params.id.toString());
     if (count > 0) {
