@@ -51,7 +51,7 @@ router.post("/login", (req, res) => {
 
           // we don't want to send back to user some info like hashed password or ref_id which we're using only internally
           let { id, firstname, lastname, username, email, role } = user;
-          const myUser = { id, firstname, lastname,username, email, role };
+          const myUser = { id, firstname, lastname, username, email, role };
 
           res.status(200).json({
             message: `Welcome ${username}!`,
