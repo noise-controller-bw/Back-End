@@ -8,7 +8,8 @@ const {
   usersRouter,
   sessionsRouter,
   authRouter,
-  classesRouter
+  classesRouter,
+  themesRouter
 } = require("./routes");
 
 middleWareConfig(server);
@@ -21,6 +22,8 @@ server.use("/users", usersRouter);
 server.use("/classes", classesRouter);
 
 server.use("/sessions", sessionsRouter);
+
+server.use("/themes", themesRouter);
 
 server.use("/", authRouter);
 
