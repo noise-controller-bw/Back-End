@@ -4,9 +4,6 @@ const server = require("../api/server.js");
 const db = require("../data/dbConfig.js");
 const Classes = require("../api/helpers/classesHelper.js");
 
-const { authenticate } = require("../auth/authenticate.js");
-const { checkRole } = require("../MiddleWare/checkRole.js");
-
 // GET
 
 describe("GET /classes", () => {
@@ -202,7 +199,7 @@ describe("getClassById", () => {
 
   //DELETE
   describe("remove Classes", () => {
-    it("delete class helper should delete a class", async () => {
+    it("should delete a class", async () => {
       await Classes.addClass({
         id: "1",
         ref_id: 1,
@@ -224,41 +221,6 @@ describe("getClassById", () => {
       expect(deletedClass).toBeUndefined();
       expect(remained.grade).toBe("5th");
     });
-
-    it("should respond with unauthorized status 401, if user not unauthorized to perform delete", async () => {
-      beforeEach(async () => {
-        //truncate clears db very fast, used in seeding
-        await db("class").truncate();
-        await db("users").truncate();
-      });
-
-      const classes = [
-        {
-          id: "1",
-          ref_id: 1,
-          name: "Ms. Angela's",
-          grade: "1st"
-        }
-      ];
-
-      await db("class").insert(classes);
-      const user = [
-        {
-          id: "1",
-          ref_id: 1,
-          firstname: "Jon",
-          lastname: "Smith",
-          username: "kSmith",
-          password: "test",
-          email: "Jsmith@gmail.com",
-          role: "teacher"
-        }
-      ];
-      await db("users").insert(user);
-
-      const res1 = await request(server).delete("/classes/1");
-      expect(res1.status).toBe(401);
-    });
   });
 
   //GET CLASS SESSIONS
@@ -271,7 +233,7 @@ describe("getClassById", () => {
     });
 
     it("get /classes/id/sesssions returns 200", async () => {
-      const res = await request(server).get("/classes/1/sessions");
+      const res = await request(server).get("/classes/id/sessions");
 
       expect(res.status).toBe(200);
       expect(res.body).toEqual([]);

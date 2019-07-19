@@ -10,9 +10,6 @@ const {
 } = require("../helpers");
 const router = require("express").Router();
 
-const { authenticate } = require("../../auth/authenticate.js");
-const { checkRole } = require("../../MiddleWare/checkRole.js");
-
 /*
 GET ROUTE
 TODO: Add middleware to ensure user is logged in
