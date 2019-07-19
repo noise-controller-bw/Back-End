@@ -36,14 +36,16 @@ router.get("/:id", async (req, res) => {
 router.post("/", async (req, res) => {
   const sessions = req.body;
 
-  if (!sessions.date || !sessions.score || !sessions.lessonName) {
+  if (!sessions.date || !sessions.score) {
     res
       .status(400)
       .json({ message: "Please provided required fields to create sessions" });
   } else {
     try {
       const inserted = await addSessions(sessions);
-      res.status(201).json(inserted);
+      res
+        .status(201)
+        .json({ message: "sessions was added succesfully", inserted });
     } catch (error) {
       res
         .status(500)
