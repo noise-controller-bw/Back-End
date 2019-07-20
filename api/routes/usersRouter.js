@@ -28,7 +28,7 @@ RETURNS an array of users
 }
 */
 
-router.get("/", async (req, res) => {
+router.get("/", authenticate, checkRole("admin"), async (req, res) => {
   try {
     const users = await getAllUsers();
     if (users) {
@@ -143,11 +143,14 @@ RETURNS user object
 */
 
 router.post("/", (req, res) => {
-  const { firstname, lastname, username, password, email } = req.body;
+  let { firstname, lastname, username, password, email, role } = req.body;
   if (!firstname || !lastname || !username || !password || !email) {
     return res.status(422).json({ error: "fill out required fields!" });
   } else {
-    const newUser = { firstname, lastname, username, password, email };
+    if(role === undefined) {
+      role = "teacher";
+    }
+    const newUser = { firstname, lastname, username, password, email, role };
     addUser(newUser)
       .then(users => {
         res.status(201).json(users);
@@ -173,7 +176,9 @@ RETURNS message (success or failure) and count (how many records has been delete
     "message": "The user could not be found"
 }
 */
-router.delete("/:id", async (req, res) => {
+// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoiMTJhZjdjYjYtMGMyMi00NTljLWJjMWMtNTc1ZjA0NWViYWNiIiwidXNlcm5hbWUiOiJFbmlnbWEiLCJyb2xlcyI6ImFkbWluIiwiaWF0IjoxNTYzNjQ1MTA5LCJleHAiOjE1NjM3MzE1MDl9.3hyvZQ4FgdNcUuzA4P4HxZ6aweFy2C47dVp9mlIN_hI
+
+router.delete("/:id", authenticate, checkRole("admin"), async (req, res) => {
   try {
     const count = await deleteUser(req.params.id.toString());
     if (count > 0) {
