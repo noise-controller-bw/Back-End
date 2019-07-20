@@ -8,14 +8,15 @@ const {
   deleteUser,
   updateUser
 } = require("../helpers");
+
 const router = require("express").Router();
 
+// middleware
 const { authenticate } = require("../../auth/authenticate.js");
 const { checkRole } = require("../../MiddleWare/checkRole.js");
 
 /*
 GET ROUTE
-TODO: Add middleware to ensure user is logged in
 ROUTE = '/users'
 RETURNS an array of users
 @user object = {
@@ -44,7 +45,6 @@ router.get("/", authenticate, checkRole("admin"), async (req, res) => {
 
 /*
 GET BY ID ROUTE
-TODO: Add middleware to ensure user is logged in
 ROUTE = '/users/:id'
 RETURNS user object
 @user object = {
@@ -57,7 +57,7 @@ RETURNS user object
 }
 */
 
-router.get("/:id", (req, res) => {
+router.get("/:id", authenticate, (req, res) => {
   getUserById(req.params.id.toString())
     .then(user => {
       if (user) {
@@ -73,7 +73,6 @@ router.get("/:id", (req, res) => {
 
 /*
 GET SESSIONS BY USER ID
-TODO: Add middleware to ensure user is logged in
 ROUTE = '/users/:id/sessions' where id = user id
 RETURNS an array of session objects
 @session object = {
@@ -88,7 +87,7 @@ RETURNS an array of session objects
 }
 */
 
-router.get("/:id/sessions", (req, res) => {
+router.get("/:id/sessions", authenticate, (req, res) => {
   getSessionsByUserId(req.params.id.toString())
     .then(sessions => {
       if (sessions) {
@@ -104,7 +103,6 @@ router.get("/:id/sessions", (req, res) => {
 
 /*
 GET CLASSES BY USER ID
-TODO: Add middleware to ensure user is logged in
 ROUTE = '/users/:id/classes' where id = user id
 RETURNS an array of unique classes objects, classes which had sessions with particular user, NOT ALL CLASSES FROM THE DB!!!
 @session object = {
@@ -114,7 +112,7 @@ RETURNS an array of unique classes objects, classes which had sessions with part
 }
 */
 
-router.get("/:id/classes", (req, res) => {
+router.get("/:id/classes", authenticate, (req, res) => {
   getClassesByUserId(req.params.id.toString())
     .then(classes => {
       if (classes) {
@@ -129,7 +127,6 @@ router.get("/:id/classes", (req, res) => {
 });
 
 /* POST
-TODO: Add middleware to ensure user is logged in
 ROUTE = '/users'
 RETURNS user object
 @user object = {
@@ -142,7 +139,7 @@ RETURNS user object
 }
 */
 
-router.post("/", (req, res) => {
+router.post("/", authenticate, (req, res) => {
   let { firstname, lastname, username, password, email, role } = req.body;
   if (!firstname || !lastname || !username || !password || !email) {
     return res.status(422).json({ error: "fill out required fields!" });
@@ -161,11 +158,8 @@ router.post("/", (req, res) => {
   }
 });
 
-// @TODO: GET route for `/users/:id/classrooms
-
 /* 
 DELETE for `/users/:id`
-TODO: Add middleware to ensure user is logged in
 ROUTE = '/users/:id'
 RETURNS message (success or failure) and count (how many records has been deleted)
 @success_object = {
@@ -176,7 +170,6 @@ RETURNS message (success or failure) and count (how many records has been delete
     "message": "The user could not be found"
 }
 */
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoiMTJhZjdjYjYtMGMyMi00NTljLWJjMWMtNTc1ZjA0NWViYWNiIiwidXNlcm5hbWUiOiJFbmlnbWEiLCJyb2xlcyI6ImFkbWluIiwiaWF0IjoxNTYzNjQ1MTA5LCJleHAiOjE1NjM3MzE1MDl9.3hyvZQ4FgdNcUuzA4P4HxZ6aweFy2C47dVp9mlIN_hI
 
 router.delete("/:id", authenticate, checkRole("admin"), async (req, res) => {
   try {
@@ -196,7 +189,6 @@ router.delete("/:id", authenticate, checkRole("admin"), async (req, res) => {
 
 /*
 PUT for `/users/:id`
-TODO: Add middleware to ensure user is logged in
 ROUTE = '/users/:id'
 RETURNS message (success or failure) and updatedUser object
 @success_object = {
@@ -213,7 +205,7 @@ RETURNS message (success or failure) and updatedUser object
     "message": "The user could not be found"
 }
 */
-router.put("/:id", async (req, res) => {
+router.put("/:id", authenticate, async (req, res) => {
   try {
     const updatedUser = {
       id: req.params.id.toString(),
