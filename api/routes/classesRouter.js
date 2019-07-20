@@ -10,7 +10,9 @@ const {
 
 const router = require("express").Router();
 
+const { authenticate } = require("../../auth/authenticate.js");
 const { checkRole } = require("../../MiddleWare/checkRole.js");
+
 /*
 GET ROUTE
 TODO: Add middleware to ensure user is logged in
@@ -123,8 +125,9 @@ TODO: Add middleware to ensure user is logged in, Role verify required?
 ROUTE = '/classes/:id'
 
 */
+const t = "teacher";
 
-router.delete("/:id", checkRole("Admin"), async (req, res) => {
+router.delete("/:id", authenticate, checkRole("admin"), async (req, res) => {
   try {
     const count = await removeClass(req.params.id.toString());
     if (count > 0) {

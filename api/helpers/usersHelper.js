@@ -41,8 +41,8 @@ function getUserById(id) {
 function getUserByFilter(filter) {
   return db("users")
     .where(filter)
-    .first()
-    // .select("id", "firstname", "lastname", "username", "email", "role");
+    .first();
+  // .select("id", "firstname", "lastname", "username", "email", "role");
 }
 
 // GET sessions by USER ID
