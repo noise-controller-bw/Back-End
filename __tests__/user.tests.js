@@ -546,7 +546,60 @@ describe('deleteUser', () => {
         let token = res.body.token;
 
         let response = await request(server).delete('/users/2').set('authorization', `${token}`);
-        
+
         expect(response.body).toEqual({ message: 'The user could not be found' });
+    });
+
+    it('should return 401 to unauthorized user', async () => {
+
+        await Users.addUser({ 
+            id: "1",
+            firstname: "Lisa",
+            lastname: "Jones",
+            username: "lijones",
+            password: "test",
+            email: "jones@gmail.com",
+            role: "teacher" 
+        });
+
+        const res = await request(server).delete('/users/1');
+        expect(res.status).toBe(401);
+    });
+
+    it('should return error message to unauthorized user', async () => {
+
+        await Users.addUser({ 
+            id: "1",
+            firstname: "Lisa",
+            lastname: "Jones",
+            username: "lijones",
+            password: "test",
+            email: "jones@gmail.com",
+            role: "teacher" 
+        });
+
+        const res = await request(server).delete('/users/1');
+        expect(res.body.error).toEqual("No token provided, must be set on the Authorization Header"); 
+    });
+
+    it('should return message to the user with "teacher" role', async () => {
+
+        let res = await request(server)
+        .post("/register")
+        .send({
+          id: "1",
+          firstname: "Matt",
+          lastname: "Smith",
+          username: "Msmith9",
+          password: "test",
+          email: "smith5w@gmail.com",
+          role: "teacher"
+        });
+
+        let token = res.body.token;
+
+        const res2 = await request(server).delete('/users/1').set('authorization', `${token}`);
+
+        expect(res2.body.message).toEqual("You're not authorized to perform this action"); 
     });
 });
