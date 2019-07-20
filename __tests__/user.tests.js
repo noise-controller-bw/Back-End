@@ -12,23 +12,52 @@ describe('GET /users', () => {
         await db('users').truncate();
     });
 
-    xit('should return 200', async () => {
+    it('should return 401 to unauthorized user', async () => {
         const res = await request(server).get('/users');
-        expect(res.status).toBe(200);
+        expect(res.status).toBe(401);
     });
 
-    xit('should return users', async () => {
+    it('should return error message to unauthorized user', async () => {
         const res = await request(server).get('/users');
-        expect(res.status).toBe(200);
-        expect(res.body).toEqual([]); 
+        expect(res.body.error).toEqual("No token provided, must be set on the Authorization Header"); 
     });
 
-    it('should return all users in db', async () => {
+    it('should return message to the user with "teacher" role', async () => {
+        let res = await request(server)
+        .post("/register")
+        .send({
+          firstname: "Matt",
+          lastname: "Smith",
+          username: "Msmith9",
+          password: "test",
+          email: "smith5w@gmail.com",
+          role: "teacher"
+        });
+        let token = res.body.token;
+
+        const res2 = await request(server).get('/users').set('authorization', `${token}`);
+        expect(res2.body.message).toEqual("You're not authorized to perform this action"); 
+    });
+
+    it('should return all users in db to the admin', async () => {
+        // register the "admin"
+        let res = await request(server)
+        .post("/register")
+        .send({
+          firstname: "Matt",
+          lastname: "Smith",
+          username: "Msmith9",
+          password: "test",
+          email: "smith5w@gmail.com",
+          role: "admin"
+        });
+        let token = res.body.token;
+        
+        // add user
         // id should be a string!
         const user = [
             {
                 id: "1",
-                ref_id: 1,
                 firstname: "Lisa",
                 lastname: "Jones",
                 username: "lijones",
@@ -40,16 +69,9 @@ describe('GET /users', () => {
 
         await db('users').insert(user);
 
-        const res = await request(server).get('/users');
-        expect(res.status).toBe(200);
-        expect(res.body).toEqual([{
-            id: "1",
-            firstname: "Lisa",
-            lastname: "Jones",
-            username: "lijones",
-            email: "jones@gmail.com",
-            role: "admin"
-        }]);
+        const res2 = await request(server).get('/users').set('authorization', `${token}`);
+        expect(res2.status).toBe(200);
+        expect(res2.body).toHaveLength(2);
     });
 });
 
