@@ -25,7 +25,7 @@ RETURNS an array of classes or an empry array if there's no classes in the class
 }
 */
 
-router.get("/", async (req, res) => {
+router.get("/", authenticate, async (req, res) => {
   try {
     const allClasses = await getAllClasses();
     if (allClasses) {
@@ -50,7 +50,7 @@ RETURNS class object
     grade: "1st" // not required
 }
 */
-router.get("/:id", (req, res) => {
+router.get("/:id", authenticate, (req, res) => {
   getClassById(req.params.id.toString())
     .then(classById => {
       if (classById) {
@@ -72,7 +72,7 @@ RETURNS class object
     grade: "1st" // not required
 }
 */
-router.post("/", (req, res) => {
+router.post("/", authenticate, (req, res) => {
   const { name, grade } = req.body;
   if (!name) {
     return res.status(422).json({ error: "fill out required `name` field!" });

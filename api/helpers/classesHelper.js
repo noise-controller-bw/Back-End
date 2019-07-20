@@ -14,7 +14,8 @@ module.exports = {
 // GET ALL classes
 // Must return all classes or empty array
 function getAllClasses() {
-  return db("class");
+  return db("class")
+    .select("id", "name", "grade");
 }
 
 // GET class by ID
@@ -22,7 +23,8 @@ function getAllClasses() {
 function getClassById(id) {
   return db("class")
     .where({ id })
-    .first();
+    .first()
+    .select("id", "name", "grade");
 }
 
 // ADD class to the db, id is randomly created with uuid
