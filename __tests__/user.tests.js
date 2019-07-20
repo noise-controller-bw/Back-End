@@ -475,42 +475,78 @@ describe('deleteUser', () => {
         await db('users').truncate();
     });
 
-    it('should return 200', async () => {
-        await Users.addUser({ 
-            id: "1",
-            firstname: "Lisa",
-            lastname: "Jones",
-            username: "lijones",
-            password: "test",
-            email: "jones@gmail.com"
+    it('should return 200 for admin', async () => {
+        let res = await request(server)
+        .post("/register")
+        .send({
+          id: "1",
+          firstname: "Matt",
+          lastname: "Smith",
+          username: "Msmith9",
+          password: "test",
+          email: "smith5w@gmail.com",
+          role: "admin"
         });
+        let token = res.body.token;
 
-        let response = await request(server).delete('/users/1')
+        let response = await request(server).delete('/users/1').set('authorization', `${token}`);
         expect(response.status).toBe(200);
     });
 
-    it('should return `The user has been deleted`', async () => {
-        await Users.addUser({ id: "1",
-        firstname: "Lisa",
-        lastname: "Jones",
-        username: "lijones",
-        password: "test",
-        email: "jones@gmail.com",
-        role: "teacher" });
+    it('should return `The user has been deleted` for admin', async () => {
+        let res = await request(server)
+        .post("/register")
+        .send({
+          id: "1",
+          firstname: "Matt",
+          lastname: "Smith",
+          username: "Msmith9",
+          password: "test",
+          email: "smith5w@gmail.com",
+          role: "admin"
+        });
+        let token = res.body.token;
 
-        let response = await request(server).delete('/users/1');
+        let response = await request(server).delete('/users/1').set('authorization', `${token}`);
+
         expect(response.body.message).toEqual('The user has been deleted');
     });
 
-    it('should return 404 if there\'s no user with provided id', async () => {
-        
-        let response = await request(server).delete('/users/1');
+    it('should return 404 if there\'s no user with provided id for admin', async () => {
+        let res = await request(server)
+        .post("/register")
+        .send({
+          id: "1",
+          firstname: "Matt",
+          lastname: "Smith",
+          username: "Msmith9",
+          password: "test",
+          email: "smith5w@gmail.com",
+          role: "admin"
+        });
+        let token = res.body.token;
+
+        let response = await request(server).delete('/users/2').set('authorization', `${token}`);
+
         expect(response.status).toBe(404);
     });
 
     it('should return "The user could not be found" if there\'s no user with provided id', async () => {
+        let res = await request(server)
+        .post("/register")
+        .send({
+          id: "1",
+          firstname: "Matt",
+          lastname: "Smith",
+          username: "Msmith9",
+          password: "test",
+          email: "smith5w@gmail.com",
+          role: "admin"
+        });
+        let token = res.body.token;
+
+        let response = await request(server).delete('/users/2').set('authorization', `${token}`);
         
-        let response = await request(server).delete('/users/1')
         expect(response.body).toEqual({ message: 'The user could not be found' });
     });
 });
