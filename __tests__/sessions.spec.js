@@ -1,4 +1,4 @@
-const supertest = require("supertest");
+const request = require("supertest");
 const server = require("../api/server.js");
 const db = require("../data/dbConfig.js");
 const {
@@ -26,18 +26,56 @@ describe("sessions helpers", () => {
 
   //Get all sessions
   describe("GET /sessions", () => {
-    it("should return an empty array if no sessions are stored", async () => {
-      const res = await supertest(server).get("/sessions");
-
-      expect(res.body).toEqual([]);
+    it("should return 401 if user not authorized", async () => {
+      const res = await request(server).get("/sessions");
+      expect(res.status).toBe(401);
+      expect(res.body.error).toEqual(
+        "No token provided, must be set on the Authorization Header"
+      );
     });
 
-    it("HTTP status for Get /sessions is 200 if successful", async () => {
-      const res = await supertest(server).get("/sessions");
-      expect(res.status).toBe(200);
+    it("Should return sessions if user is authorized", async () => {
+      const sessions = [
+        {
+          id: "1",
+          user_id: 1,
+          class_id: 1,
+          date: "",
+          score: 90,
+          lessonName: "Reading"
+        },
+        {
+          id: "2",
+          user_id: 2,
+          class_id: 1,
+          date: "",
+          score: 100,
+          lessonName: "Science"
+        }
+      ];
+
+      await db("sessions").insert(sessions);
+
+      let res = await request(server)
+        .post("/register")
+        .send({
+          firstname: "Matt",
+          lastname: "Smith",
+          username: "Msmith9",
+          password: "test",
+          email: "smith5w@gmail.com",
+          role: "teacher"
+        });
+      let token = res.body.token;
+
+      const res2 = await request(server)
+        .get("/sessions")
+        .set("authorization", `${token}`);
+      expect(res2.status).toBe(200);
+      expect(res2.body).toHaveLength(2);
     });
 
-    it("should return all sessions in db", async () => {
+    it("should return all sessions in db to authorized user", async () => {
       const session = [
         {
           id: "1",
@@ -49,14 +87,48 @@ describe("sessions helpers", () => {
 
       await db("sessions").insert(session);
 
-      const res = await supertest(server).get("/sessions");
-      expect(res.status).toBe(200);
-      expect(res.body).toEqual(session);
+      let res = await request(server)
+        .post("/register")
+        .send({
+          firstname: "Matt",
+          lastname: "Smith",
+          username: "Msmith9",
+          password: "test",
+          email: "smith5w@gmail.com",
+          role: "teacher"
+        });
+      let token = res.body.token;
+
+      const res1 = await request(server)
+        .get("/sessions")
+        .set("authorization", `${token}`);
+      expect(res1.status).toBe(200);
+      expect(res1.body).toEqual(session);
     });
   });
 
   //GET sessions By id
   describe("get Sessions By ID", () => {
+    it("should return 401 if user not authorized", async () => {
+      const sessions = [
+        {
+          id: "1",
+          user_id: 1,
+          class_id: 1,
+          date: "",
+          score: "100",
+          lessonName: "Math"
+        }
+      ];
+
+      await db("sessions").insert(sessions);
+      const res = await request(server).get("/sessions/1");
+      expect(res.status).toBe(401);
+      expect(res.body.error).toEqual(
+        "No token provided, must be set on the Authorization Header"
+      );
+    });
+
     it("finds session by id", async () => {
       const user = [
         {
@@ -152,10 +224,23 @@ describe("sessions helpers", () => {
 
       await db("sessions").insert(sessions);
 
-      const res = await supertest(server).get("/sessions/1");
+      let res1 = await request(server)
+        .post("/register")
+        .send({
+          firstname: "Matt",
+          lastname: "Smith",
+          username: "Msmith9",
+          password: "test",
+          email: "smith5w@gmail.com",
+          role: "teacher"
+        });
+      let token = res1.body.token;
+
+      const res = await request(server)
+        .get("/sessions")
+        .set("authorization", `${token}`);
       expect(res.status).toBe(200);
       expect(res.body).toHaveLength(1);
-      expect(res.body).toStrictEqual(body);
     });
 
     it("returns empty array if no sessions stored", async () => {
@@ -167,29 +252,48 @@ describe("sessions helpers", () => {
 
   //POST sessions
   describe("Post /sessions", () => {
-    it("should return 201 code if req info is complete", async () => {
-      const session = {
-        id: "1",
-        date: "06/20/19",
-        score: 80,
-        lessonName: "Grammar"
-      };
-      const res = await supertest(server)
+    it("should return 401 if user not authorized", async () => {
+      const sessions = [
+        {
+          id: "1",
+          user_id: 1,
+          class_id: 1,
+          date: "",
+          score: "100",
+          lessonName: "Math"
+        }
+      ];
+
+      const res = await request(server)
         .post("/sessions")
-        .send(session);
-      expect(res.status).toBe(201);
+        .send(sessions);
+      expect(res.status).toBe(401);
+      expect(res.body.error).toEqual(
+        "No token provided, must be set on the Authorization Header"
+      );
     });
 
     it("should return 400 code if req info is not complete", async () => {
+      let res1 = await request(server)
+        .post("/register")
+        .send({
+          firstname: "Matt",
+          lastname: "Smith",
+          username: "Msmith9",
+          password: "test",
+          email: "smith5w@gmail.com",
+          role: "teacher"
+        });
+      let token = res1.body.token;
+
       const session = {
         id: "1",
-        date: "06/20/19",
-
-        lessonName: "Grammar"
+        date: "06/20/19"
       };
 
-      const res = await supertest(server)
+      const res = await request(server)
         .post("/sessions")
+        .set("authorization", `${token}`)
         .send(session);
       expect(res.status).toBe(400);
     });
@@ -206,13 +310,19 @@ describe("sessions helpers", () => {
       const sessions = await db("sessions");
 
       expect(sessions).toHaveLength(1);
-      expect(sessions[0].lessonName).toBe("Grammar");
+      expect(sessions[0].score).toEqual(80);
     });
   });
 
   //UPDATE Sessions
   describe("updateSession", () => {
-    it("should return 200", async () => {
+    const updatedSession = {
+      date: "06/21/19",
+      score: 65,
+      lessonName: "Grammar"
+    };
+
+    it("should return 401 if user not authorized", async () => {
       const session = await addSessions({
         id: "1",
         date: "06/20/19",
@@ -226,10 +336,48 @@ describe("sessions helpers", () => {
         lessonName: "Grammar"
       };
 
-      let res = await supertest(server)
+      const res = await request(server)
         .put("/sessions/1")
         .send(updatedSession);
-      expect(res.status).toBe(200);
+      expect(res.status).toBe(401);
+      expect(res.body.error).toEqual(
+        "No token provided, must be set on the Authorization Header"
+      );
+    });
+
+    it("should update session for authorized user", async () => {
+      const session = await addSessions({
+        id: "1",
+        date: "06/20/19",
+        score: 80,
+        lessonName: "Grammar"
+      });
+
+      const updatedSession = {
+        date: "06/21/19",
+        score: 65,
+        lessonName: "Grammar"
+      };
+
+      let res = await request(server)
+        .post("/register")
+        .send({
+          id: "2",
+          firstname: "Matt",
+          lastname: "Smith",
+          username: "Msmith9",
+          password: "test",
+          email: "smith5w@gmail.com",
+          role: "teacher"
+        });
+
+      let token = res.body.token;
+
+      let res1 = await request(server)
+        .put("/sessions/1")
+        .set("authorization", `${token}`)
+        .send(updatedSession);
+      expect(res1.status).toBe(200);
     });
 
     it("should return the updated session", async () => {
@@ -247,10 +395,25 @@ describe("sessions helpers", () => {
         lessonName: "Grammar"
       };
 
-      let res = await supertest(server)
+      let res = await request(server)
+        .post("/register")
+        .send({
+          id: "2",
+          firstname: "Matt",
+          lastname: "Smith",
+          username: "Msmith9",
+          password: "test",
+          email: "smith5w@gmail.com",
+          role: "teacher"
+        });
+
+      let token = res.body.token;
+
+      let res1 = await request(server)
         .put("/sessions/1")
+        .set("authorization", `${token}`)
         .send(updatedSession);
-      expect(res.body.message).toEqual("The session has been updated");
+      expect(res1.body.message).toEqual("The session has been updated");
     });
 
     it("should return 404 for no session with provided id", async () => {
@@ -260,15 +423,45 @@ describe("sessions helpers", () => {
         lessonName: "Grammar"
       };
 
-      let res = await supertest(server)
+      let res = await request(server)
+        .post("/register")
+        .send({
+          id: "2",
+          firstname: "Matt",
+          lastname: "Smith",
+          username: "Msmith9",
+          password: "test",
+          email: "smith5w@gmail.com",
+          role: "teacher"
+        });
+
+      let token = res.body.token;
+
+      let res2 = await request(server)
         .put("/sessions/3")
+        .set("authorization", `${token}`)
         .send(updatedSession);
-      expect(res.status).toBe(404);
+      expect(res2.status).toBe(404);
     });
   });
 
   //DELETE Sessions
   describe("removeSessions Model", () => {
+    it("should return 401 if user not authorized", async () => {
+      await addSessions({
+        id: "1",
+        date: "06/20/19",
+        score: 80,
+        lessonName: "Grammar"
+      });
+
+      const res = await request(server).delete("/sessions/1");
+      expect(res.status).toBe(401);
+      expect(res.body.error).toEqual(
+        "No token provided, must be set on the Authorization Header"
+      );
+    });
+
     it("should delete a session", async () => {
       await addSessions({
         id: "1",
@@ -288,6 +481,33 @@ describe("sessions helpers", () => {
       const allSessions = await findSessions();
 
       expect(allSessions).toHaveLength(1);
+    });
+
+    it("should delete session for authorized user", async () => {
+      const session = await addSessions({
+        id: "1",
+        date: "06/20/19",
+        score: 80,
+        lessonName: "Grammar"
+      });
+
+      let res = await request(server)
+        .post("/register")
+        .send({
+          firstname: "Matt",
+          lastname: "Smith",
+          username: "Msmith9",
+          password: "test",
+          email: "smith5w@gmail.com",
+          role: "teacher"
+        });
+      let token = res.body.token;
+
+      const res2 = await request(server)
+        .delete("/sessions/1")
+        .set("authorization", `${token}`);
+      expect(res2.status).toBe(200);
+      expect(res2.body.message).toEqual("The session has been deleted");
     });
   });
 });
