@@ -11,14 +11,14 @@ function checkRole(role) {
     //includes is method can call on array
     //&& operators allows you to check presence of each
     //roles normally would be on table
-    if (
-      req.decodedToken &&
-      req.decodedToken.roles &&
-      req.decodedToken.roles.includes(role)
-    ) {
+    if (req.decoded && req.decoded.roles && req.decoded.roles.includes(role)) {
+      console.log("user role is:", req.decoded.roles);
       next();
     } else {
-      res.status(403).json({ message: "can't touch this!" });
+      console.log("user role is:", req.decoded.roles);
+      res
+        .status(403)
+        .json({ message: "You're not authorized to perform this action" });
     }
   };
 }
