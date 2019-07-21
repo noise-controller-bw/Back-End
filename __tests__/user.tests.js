@@ -1,6 +1,5 @@
 const request = require('supertest');
 const server = require('../api/server.js');
-
 const db = require('../data/dbConfig.js');
 const Users = require('../api/helpers/usersHelper.js');
 
@@ -51,6 +50,8 @@ describe('GET /users', () => {
             role: "teacher"
         }]);
     });
+
+   
 });
 
 // GET by Id
@@ -491,4 +492,7 @@ describe('deleteUser', () => {
         let response = await request(server).delete('/users/1')
         expect(response.body).toEqual({ message: 'The user could not be found' });
     });
+
+   
+
 });
