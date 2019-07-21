@@ -610,7 +610,7 @@ describe("getClassById", () => {
 
       await db("sessions").insert(sessions);
 
-      const body = { grade: "1st", id: "1", name: "Ms. Angela's", ref_id: 1 };
+      const body = { grade: "1st", id: "1", name: "Ms. Angela's" };
 
       let res = await request(server)
         .post("/register")
