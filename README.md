@@ -8,15 +8,16 @@
 - [MVP](#MVP)
 - [Stretch](#Stretch)
 - [Resources](#Resources)
+   - [Restricted routes](#Restricted_routes)
    - [Authentication](#Authentication)
         - [Register](#Register)
         - [Login](#Login)
    - [Users](#Users)
         - [GET all users](#GET-all-users)
         - [GET user by id](#GET-user-by-id)
-        - [GET sessions by user id)](#GET_sessions_by_user_id)
+        - [GET sessions by user id](#GET_sessions_by_user_id)
         - [GET classes by user id](#GET_classes_by_user_id)
-        - [POST /users](#AddNewUser)
+        - [POST create new user](#POST_create_new_user)
         - [DELETE /users/:id](#DeleteUser)
         - [PUT /users/:id](#EditUser)
    - [Sessions](#Sessions)
@@ -40,7 +41,11 @@ _**Pitch:**_ As a teacher, it can be hard to control the noise level in your cla
 * Create additional visual effects/themes for the class to choose from. (forest, ocean, desert, spiders, dinos, etc.)
 * Ability for a teacher to have multiple classes, and a page to view a list of their classes.
 
-# Endpoinds
+# Resources
+
+## Restricted routes
+
+All routes exept /register and /login are restricted, user must be logged in. GET for /users, DELETE /users/:id and /classes/:id are accessible only for users with admin permissions. 
 
 ## Authentication
 
@@ -155,17 +160,15 @@ Example:
 
 Example:
 ```js
-    {
-        "id": "1",
-        "date": "",
-        "score": 100,
-        "lessonName": "Math",
-        "name": "Ms. Angela's",
-        "grade": "1st"
-    }
+{
+    "id": "1",
+    "date": "",
+    "score": 100,
+    "lessonName": "Math",
+    "name": "Ms. Angela's",
+    "grade": "1st"
+}
 ```
-
-
 
 ### [GET] classes by user id
 
@@ -173,6 +176,7 @@ Example:
 
 **Returns:** an array of session objects for particular user
 
+Example:
 ```js
 {
     "id": "1",
@@ -181,7 +185,35 @@ Example:
 }
 ```
 
-### [POST /users] create new user
+### [POST] create new user
+
+**URL:** `/users`
+
+**Payload:**
+```js
+{
+    "firstname": "Alan",
+    "lastname": "Turing",
+    "username": "Enigma",
+    "password": "super%password",
+    "email": "turing@email.me",
+    "role": "admin" // optional, default to "teacher"
+}
+```
+
+**Returns:** a newely created user object with id
+
+Example:
+```js
+{
+    "id": "350a9aeb-3545-42f4-892b-791d51fc9e0a",
+    "firstname": "Alan",
+    "lastname": "Turing",
+    "username": "Enigma",
+    "email": "turing@email.me",
+    "role": "admin"
+}
+```
 
 ### [DELETE /users/:id] delete user
 
