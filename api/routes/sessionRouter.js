@@ -4,10 +4,14 @@ const {
   findSessionsById,
   addSessions,
   removeSessions,
-  updateSessions
+  updateSessions,
+  getSessionsByFilter
 } = require("../helpers");
 
-router.get("/", async (req, res) => {
+const { authenticate } = require("../../auth/authenticate.js");
+const { checkRole } = require("../../MiddleWare/checkRole.js");
+
+router.get("/", authenticate, async (req, res) => {
   try {
     const sessions = await findSessions();
     res.status(200).json(sessions);
@@ -18,7 +22,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", authenticate, async (req, res) => {
   try {
     const sessions = await findSessionsById(req.params.id);
     if (sessions) {
@@ -33,7 +37,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", authenticate, async (req, res) => {
   const sessions = req.body;
 
   if (!sessions.date || !sessions.score) {
@@ -54,7 +58,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", authenticate, async (req, res) => {
   try {
     const updatedSessions = {
       id: req.params.id.toString(),
@@ -76,8 +80,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-//can add check role mw here for delete
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", authenticate, async (req, res) => {
   try {
     const count = await removeSessions(req.params.id.toString());
     if (count > 0) {
