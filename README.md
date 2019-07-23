@@ -14,8 +14,8 @@
    - [Users](#Users)
         - [GET all users](#GET-all-users)
         - [GET user by id](#GET-user-by-id)
-        - [GET_Sessions_By_User_Id](#GET_Sessions_By_User_Id)
-        - [GET /users/:id/classes](#GetClassesByUserId)
+        - [GET sessions by user id)](#GET_sessions_by_user_id)
+        - [GET classes by user id](#GET_classes_by_user_id)
         - [POST /users](#AddNewUser)
         - [DELETE /users/:id](#DeleteUser)
         - [PUT /users/:id](#EditUser)
@@ -57,7 +57,8 @@ _**Pitch:**_ As a teacher, it can be hard to control the noise level in your cla
     "lastname": "Turing",
     "username": "Enigma",
     "password": "super%password",
-    "email": "turing@email.me"
+    "email": "turing@email.me",
+    "role": "teacher" // optional, default to teacher
 }
 ```
 **Returns:** a user object and the authentication token.
@@ -111,14 +112,74 @@ Example:
 ## Users
 
 ### [GET] all users
-**/users**
+
+**URL:** /users
+
+**Returns:** an array of user objects
+
+Example:
+```js
+{
+    "id": "1",
+    "firstname": "Kasia",
+    "lastname": "Bondarava",
+    "username": "kbondarava",
+    "email": "kbondarava@email.me",
+    "role": "teacher"
+}
+```
 
 ### [GET] user by id
-**/users/:id**
 
-### [GET /users/:id/sessions] all sessions of the user (by user id)
+**URL:** /users/:id
 
-### [GET /users/:id/classes] all classes of the user (by user id)
+**Returns:** a user object
+
+Example:
+```js
+{
+    "id": "2",
+    "firstname": "Levi",
+    "lastname": "Simpson",
+    "username": "levisimpson",
+    "email": "levisimpson@email.me",
+    "role": "teacher"
+}
+```
+
+### [GET] sessions by user id
+
+**URL:**  /users/:id/sessions
+
+**Returns:** an array of session objects for particular user
+
+Example:
+```js
+    {
+        "id": "1",
+        "date": "",
+        "score": 100,
+        "lessonName": "Math",
+        "name": "Ms. Angela's",
+        "grade": "1st"
+    }
+```
+
+
+
+### [GET] classes by user id
+
+**URL:**  /users/:id/classes
+
+**Returns:** an array of session objects for particular user
+
+```js
+{
+    "id": "1",
+    "name": "Ms. Angela's",
+    "grade": "1st"
+}
+```
 
 ### [POST /users] create new user
 
