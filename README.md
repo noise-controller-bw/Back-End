@@ -126,7 +126,7 @@ Example:
 
 ### [GET] all users
 
-**URL:** /users
+**URL:** `/users`
 
 **Returns:** an array of user objects
 
@@ -145,7 +145,7 @@ Example:
 
 ### [GET] user by id
 
-**URL:** /users/:id
+**URL:** `/users/:id`
 
 **Returns:** a user object
 
@@ -164,7 +164,7 @@ Example:
 
 ### [GET] sessions by user id
 
-**URL:**  /users/:id/sessions
+**URL:** `/users/:id/sessions`
 
 **Returns:** an array of session objects for particular user
 
@@ -182,7 +182,7 @@ Example:
 
 ### [GET] classes by user id
 
-**URL:**  /users/:id/classes
+**URL:** `/users/:id/classes`
 
 **Returns:** an array of session objects for particular user
 
@@ -244,7 +244,7 @@ Example:
 
 ### [PUT] edit user
 
-**URL:** /users/:id
+**URL:** `/users/:id`
 
 **Payload:** an object with the same values as for [register](#Register).
 
@@ -269,7 +269,7 @@ Example:
 
 ### [GET] all sessions
 
-**URL:** /sessions
+**URL:** `/sessions`
 
 **Returns:** an array of sessions objects
 
@@ -285,7 +285,7 @@ Example:
 
 ### [GET] session by id
 
-**URL:** /sessions/:id
+**URL:** `/sessions/:id`
 
 **Returns:** a session object
 
@@ -305,7 +305,7 @@ Example:
 
 ### [POST] create session
 
-**URL:** /sessions
+**URL:** `/sessions`
 
 **Payload:**
 ```js
@@ -355,7 +355,7 @@ Example:
 
 ### [PUT] edit session
 
-**URL:** /sessions/:id
+**URL:** `/sessions/:id`
 
 **Payload:** an object with the same values as for [create session](#POST-create-session).
 
