@@ -4,11 +4,7 @@ const server = require("../api/server.js");
 const db = require("../data/dbConfig.js");
 const Classes = require("../api/helpers/classesHelper.js");
 
-const { authenticate } = require("../auth/authenticate.js");
-const { checkRole } = require("../MiddleWare/checkRole.js");
-
 // GET
-
 describe("GET /classes", () => {
   // cleanup for db
   afterEach(async () => {
@@ -16,72 +12,69 @@ describe("GET /classes", () => {
     await db("users").truncate();
   });
 
-  it('should return 401 to unauthorized user', async () => {
-
-    const res = await request(server).get('/classes');
+  it("should return 401 to unauthorized user", async () => {
+    const res = await request(server).get("/classes");
 
     expect(res.status).toBe(401);
-
-});
+  });
 
   it("should return 200 to authorized user", async () => {
-
     let res = await request(server)
-        .post("/register")
-        .send({
-          id: "1",
-          firstname: "Matt",
-          lastname: "Smith",
-          username: "Msmith9",
-          password: "test",
-          email: "smith5w@gmail.com",
-          role: "admin"
-    });
+      .post("/register")
+      .send({
+        id: "1",
+        firstname: "Matt",
+        lastname: "Smith",
+        username: "Msmith9",
+        password: "test",
+        email: "smith5w@gmail.com",
+        role: "admin"
+      });
 
     let token = res.body.token;
 
-    const res2 = await request(server).get("/classes").set('authorization', `${token}`);
+    const res2 = await request(server)
+      .get("/classes")
+      .set("authorization", `${token}`);
 
     expect(res2.status).toBe(200);
-
   });
 
   it("should return classes to authorized user", async () => {
-
     let res = await request(server)
-        .post("/register")
-        .send({
-          id: "1",
-          firstname: "Matt",
-          lastname: "Smith",
-          username: "Msmith9",
-          password: "test",
-          email: "smith5w@gmail.com",
-          role: "admin"
-    });
+      .post("/register")
+      .send({
+        id: "1",
+        firstname: "Matt",
+        lastname: "Smith",
+        username: "Msmith9",
+        password: "test",
+        email: "smith5w@gmail.com",
+        role: "admin"
+      });
 
     let token = res.body.token;
 
-    const res2 = await request(server).get("/classes").set('authorization', `${token}`);
+    const res2 = await request(server)
+      .get("/classes")
+      .set("authorization", `${token}`);
 
     expect(res2.status).toBe(200);
     expect(res2.body).toEqual([]);
   });
 
   it("should return all classes in db to authorized user", async () => {
-
     let res = await request(server)
-        .post("/register")
-        .send({
-          id: "1",
-          ref_id: 1,
-          firstname: "Matt",
-          lastname: "Smith",
-          username: "Msmith9",
-          password: "test",
-          email: "smith5w@gmail.com",
-          role: "admin"
-    });
+      .post("/register")
+      .send({
+        id: "1",
+        firstname: "Matt",
+        lastname: "Smith",
+        username: "Msmith9",
+        password: "test",
+        email: "smith5w@gmail.com",
+        role: "admin"
+      });
 
     let token = res.body.token;
 
@@ -89,7 +82,6 @@ describe("GET /classes", () => {
     const testClass = [
       {
         id: "1",
-        ref_id: 1,
         name: "Ms. Angela's",
         grade: "1st"
       }
@@ -97,7 +89,9 @@ describe("GET /classes", () => {
 
     await db("class").insert(testClass);
 
-    const res2 = await request(server).get("/classes").set('authorization', `${token}`);
+    const res2 = await request(server)
+      .get("/classes")
+      .set("authorization", `${token}`);
 
     expect(res2.status).toBe(200);
     expect(res2.body).toEqual(testClass);
@@ -113,16 +107,13 @@ describe("getClassById", () => {
     await db("users").truncate();
   });
 
-  it('should return 401 to unauthorized user', async () => {
-
-    const res = await request(server).get('/classes/1');
+  it("should return 401 to unauthorized user", async () => {
+    const res = await request(server).get("/classes/1");
 
     expect(res.status).toBe(401);
-
   });
 
   it("finds a class by id (helper)", async () => {
-
     await db("class").insert([
       {
         id: "1",
@@ -142,19 +133,18 @@ describe("getClassById", () => {
   });
 
   it("finds a class by id (route)", async () => {
-
     let res = await request(server)
-        .post("/register")
-        .send({
-          id: "1",
-          firstname: "Matt",
-          lastname: "Smith",
-          username: "Msmith9",
-          password: "test",
-          email: "smith5w@gmail.com",
-          role: "admin"
-    });
-    
+      .post("/register")
+      .send({
+        id: "1",
+        firstname: "Matt",
+        lastname: "Smith",
+        username: "Msmith9",
+        password: "test",
+        email: "smith5w@gmail.com",
+        role: "admin"
+      });
+
     let token = res.body.token;
 
     await db("class").insert([
@@ -170,7 +160,9 @@ describe("getClassById", () => {
       }
     ]);
 
-    let response = await request(server).get('/classes/2').set('authorization', `${token}`);
+    let response = await request(server)
+      .get("/classes/2")
+      .set("authorization", `${token}`);
 
     const myClass = await Classes.getClassById("2");
 
@@ -192,12 +184,10 @@ describe("getClassById", () => {
       await db("users").truncate();
     });
 
-    it('should return 401 to unauthorized user', async () => {
-
-      const res = await request(server).post('/classes');
+    it("should return 401 to unauthorized user", async () => {
+      const res = await request(server).post("/classes");
 
       expect(res.status).toBe(401);
-
     });
 
     it("should insert classes into the db", async () => {
@@ -219,24 +209,23 @@ describe("getClassById", () => {
     });
 
     it("should return a status code of 201 to authorized user", async () => {
-
       let res = await request(server)
-      .post("/register")
-      .send({
-        id: "1",
-        firstname: "Matt",
-        lastname: "Smith",
-        username: "Msmith9",
-        password: "test",
-        email: "smith5w@gmail.com",
-        role: "admin"
-      });
+        .post("/register")
+        .send({
+          id: "1",
+          firstname: "Matt",
+          lastname: "Smith",
+          username: "Msmith9",
+          password: "test",
+          email: "smith5w@gmail.com",
+          role: "admin"
+        });
 
       let token = res.body.token;
 
       let response = await request(server)
         .post("/classes")
-        .set('authorization', `${token}`)
+        .set("authorization", `${token}`)
         .send({
           id: "1",
           name: "Ms. Jen's",
@@ -249,21 +238,18 @@ describe("getClassById", () => {
     it("should return the new class on insert (helper)", async () => {
       const newClass = await Classes.addClass({
         id: "1",
-        ref_id: 1,
         name: "Ms. Patty's",
         grade: "1st"
       });
 
       expect(newClass).toEqual({
         id: "1",
-        ref_id: 1,
         name: "Ms. Patty's",
         grade: "1st"
       });
     });
 
     it("should return the new class on insert (route)", async () => {
-
       let res = await request(server)
         .post("/register")
         .send({
@@ -274,42 +260,40 @@ describe("getClassById", () => {
           password: "test",
           email: "smith5w@gmail.com",
           role: "admin"
-      });
+        });
 
       let token = res.body.token;
 
       const response = await request(server)
-      .post("/classes")
-      .set('authorization', `${token}`)
-      .send({
-        name: "Ms. Patty's",
-        grade: "1st"
-      });
+        .post("/classes")
+        .set("authorization", `${token}`)
+        .send({
+          name: "Ms. Patty's",
+          grade: "1st"
+        });
 
       expect(response.body.name).toBe("Ms. Patty's");
       expect(response.body.grade).toBe("1st");
-
     });
 
     it("should return a `422` status code if name field is not included inside the body to authorized user", async () => {
-
       let res = await request(server)
-      .post("/register")
-      .send({
-        id: "1",
-        firstname: "Matt",
-        lastname: "Smith",
-        username: "Msmith9",
-        password: "test",
-        email: "smith5w@gmail.com",
-        role: "admin"
-      });
+        .post("/register")
+        .send({
+          id: "1",
+          firstname: "Matt",
+          lastname: "Smith",
+          username: "Msmith9",
+          password: "test",
+          email: "smith5w@gmail.com",
+          role: "admin"
+        });
 
       let token = res.body.token;
 
       let response = await request(server)
         .post("/classes")
-        .set('authorization', `${token}`)
+        .set("authorization", `${token}`)
         .send({ grade: "1st" });
 
       expect(response.status).toBe(422);
@@ -318,49 +302,92 @@ describe("getClassById", () => {
 
   //UPDATE
   describe("update Class", () => {
-    it("should return 200", async () => {
-      const classes = await Classes.addClass({
-        id: "1",
-        ref_id: 1,
-        name: "Mr. Smith's",
-        grade: "5th"
-      });
+    beforeEach(async () => {
+      await db("sessions").truncate();
+      await db("class").truncate();
+      await db("users").truncate();
+    });
 
-      const updatedClass = {
+    it("should return 401 if user is unauthorized", async () => {
+      const class1 = {
         id: "1",
         ref_id: 1,
         name: "Mrs. Jan's",
         grade: "6th"
       };
 
-      let res = await request(server)
+      await db("class").insert(class1);
+
+      const updatedClass = [
+        {
+          id: "1",
+          name: "Mrs. June's",
+          grade: "6th"
+        }
+      ];
+
+      let res2 = await request(server)
         .put("/classes/1")
         .send(updatedClass);
-      expect(res.status).toBe(200);
+
+      expect(res2.status).toBe(401);
     });
 
-    it("should return the updated class", async () => {
-      const classes = await Classes.addClass({
-        id: "1",
-        ref_id: 1,
-        name: "Ms. Smith's",
-        grade: "1st"
-      });
+    it("should return the updated class, to authorized user", async () => {
+      let res = await request(server)
+        .post("/register")
+        .send({
+          id: "3",
+          firstname: "Matt",
+          lastname: "Smith",
+          username: "Msmith9",
+          password: "test",
+          email: "smith5w@gmail.com",
+          role: "admin"
+        });
 
-      const updatedClass = {
+      let token = res.body.token;
+
+      const class1 = {
         id: "1",
         ref_id: 1,
         name: "Ms. Tino's",
         grade: "4th"
       };
 
-      let res = await request(server)
+      await db("class").insert(class1);
+
+      const updatedClass = {
+        id: "1",
+        ref_id: 1,
+        name: "Ms. Shelly's",
+        grade: "4th"
+      };
+
+      let res2 = await request(server)
         .put("/classes/1")
+        .set("authorization", `${token}`)
         .send(updatedClass);
-      expect(res.body.message).toEqual("The class has been updated");
+
+      expect(res2.body.message).toEqual("The class has been updated");
+      expect(res2.status).toBe(200);
     });
 
     it("should return 404 for no class with provided id", async () => {
+      let res = await request(server)
+        .post("/register")
+        .send({
+          id: "3",
+          firstname: "Matt",
+          lastname: "Smith",
+          username: "Msmith9",
+          password: "test",
+          email: "smith5w@gmail.com",
+          role: "admin"
+        });
+
+      let token = res.body.token;
+
       const updatedClass = {
         id: "1",
         ref_id: 1,
@@ -368,16 +395,73 @@ describe("getClassById", () => {
         grade: "4th"
       };
 
-      let res = await request(server)
+      let res1 = await request(server)
         .put("/classes/3")
+        .set("authorization", `${token}`)
         .send(updatedClass);
-      expect(res.status).toBe(404);
+      expect(res1.status).toBe(404);
     });
   });
 
   //DELETE
   describe("remove Classes", () => {
-    it("delete class helper should delete a class", async () => {
+    afterEach(async () => {
+      await db("sessions").truncate();
+      await db("class").truncate();
+      await db("users").truncate();
+    });
+
+    it("should return 401 if user is unauthorized", async () => {
+      const class1 = {
+        id: "1",
+        ref_id: 1,
+        name: "Mrs. Jan's",
+        grade: "6th"
+      };
+
+      await db("class").insert(class1);
+
+      let res = await request(server).delete("/classes/1");
+
+      expect(res.status).toBe(401);
+    });
+
+    it("should delete class if user is authorized", async () => {
+      afterEach(async () => {
+        await db("users").truncate();
+        await db("sessions").truncate();
+        await db("class").truncate();
+      });
+
+      const class1 = {
+        id: "1",
+        ref_id: 1,
+        name: "Mrs. Jan's",
+        grade: "6th"
+      };
+
+      await db("class").insert(class1);
+
+      let res = await request(server)
+        .post("/register")
+        .send({
+          id: "1",
+          firstname: "Matt",
+          lastname: "Smith",
+          username: "Msmith9",
+          password: "test",
+          email: "smith5w@gmail.com",
+          role: "admin"
+        });
+      let token = res.body.token;
+
+      let response = await request(server)
+        .delete("/classes/1")
+        .set("authorization", `${token}`);
+      expect(response.status).toBe(200);
+    });
+
+    it("removeClass helper should delete class", async () => {
       await Classes.addClass({
         id: "1",
         ref_id: 1,
@@ -399,41 +483,6 @@ describe("getClassById", () => {
       expect(deletedClass).toBeUndefined();
       expect(remained.grade).toBe("5th");
     });
-
-    it("should respond with unauthorized status 401, if user not unauthorized to perform delete", async () => {
-      beforeEach(async () => {
-        //truncate clears db very fast, used in seeding
-        await db("class").truncate();
-        await db("users").truncate();
-      });
-
-      const classes = [
-        {
-          id: "1",
-          ref_id: 1,
-          name: "Ms. Angela's",
-          grade: "1st"
-        }
-      ];
-
-      await db("class").insert(classes);
-      const user = [
-        {
-          id: "1",
-          ref_id: 1,
-          firstname: "Jon",
-          lastname: "Smith",
-          username: "kSmith",
-          password: "test",
-          email: "Jsmith@gmail.com",
-          role: "teacher"
-        }
-      ];
-      await db("users").insert(user);
-
-      const res1 = await request(server).delete("/classes/1");
-      expect(res1.status).toBe(401);
-    });
   });
 
   //GET CLASS SESSIONS
@@ -445,11 +494,10 @@ describe("getClassById", () => {
       await db("users").truncate();
     });
 
-    it("get /classes/id/sesssions returns 200", async () => {
-      const res = await request(server).get("/classes/1/sessions");
+    it("get /classes/id/sesssions returns 401 if unauthorized", async () => {
+      const res = await request(server).get("/classes/id/sessions");
 
-      expect(res.status).toBe(200);
-      expect(res.body).toEqual([]);
+      expect(res.status).toBe(401);
     });
     it("finds sessions info by class id", async () => {
       const user = [
@@ -521,6 +569,9 @@ describe("getClassById", () => {
     });
 
     it("returns additional info for class and users", async () => {
+      await db("sessions").truncate();
+      await db("class").truncate();
+      await db("users").truncate();
       const user = [
         {
           id: "1",
@@ -557,23 +608,30 @@ describe("getClassById", () => {
         }
       ];
 
-      const body = [
-        {
-          id: "1",
-          firstname: "Jon",
-          lastname: "Smith",
-          lessonName: "Math",
-          date: "",
-          score: 100
-        }
-      ];
-
       await db("sessions").insert(sessions);
 
-      const res = await request(server).get("/classes/1/sessions");
-      expect(res.status).toBe(200);
-      expect(res.body).toHaveLength(1);
-      expect(res.body).toStrictEqual(body);
+      const body = { grade: "1st", id: "1", name: "Ms. Angela's" };
+
+      let res = await request(server)
+        .post("/register")
+        .send({
+          id: "3",
+          firstname: "Matt",
+          lastname: "Smith",
+          username: "Msmith9",
+          password: "test",
+          email: "smith5w@gmail.com",
+          role: "admin"
+        });
+
+      let token = res.body.token;
+
+      let res2 = await request(server)
+        .get("/classes/1")
+        .set("authorization", `${token}`);
+
+      expect(res2.status).toBe(200);
+      expect(res2.body).toStrictEqual(body);
     });
 
     it("returns empty array if no session stored", async () => {
@@ -592,11 +650,108 @@ describe("getClassById", () => {
       await db("users").truncate();
     });
 
-    it("get /classes/id/users returns 200", async () => {
-      const res = await request(server).get("/classes/id/users");
+    it("should return 401 if user is unauthorized", async () => {
+      const class1 = {
+        id: "1",
+        ref_id: 1,
+        name: "Mrs. Jan's",
+        grade: "6th"
+      };
 
-      expect(res.status).toBe(200);
-      expect(res.body).toEqual([]);
+      await db("class").insert(class1);
+
+      const user1 = [
+        {
+          id: "1",
+          firstname: "Lisa",
+          lastname: "Jones",
+          username: "lijones",
+          password: "test",
+          email: "jones@gmail.com",
+          role: "teacher"
+        }
+      ];
+
+      await db("users").insert(user1);
+
+      let res1 = await request(server).get("/classes/1/users");
+
+      expect(res1.status).toBe(401);
+    });
+
+    it("returns class users if user is authorized", async () => {
+      beforeEach(async () => {
+        //truncate clears db very fast, used in seeding
+        await db("sessions").truncate();
+        await db("class").truncate();
+        await db("users").truncate();
+      });
+
+      const class1 = {
+        id: "1",
+        ref_id: 1,
+        name: "Mrs. Jan's",
+        grade: "6th"
+      };
+
+      await db("class").insert(class1);
+
+      const user1 = [
+        {
+          id: "1",
+          ref_id: 1,
+          firstname: "Lisa",
+          lastname: "Jones",
+          username: "lijones",
+          password: "test",
+          email: "jones@gmail.com",
+          role: "teacher"
+        }
+      ];
+
+      await db("users").insert(user1);
+
+      const sessions = [
+        {
+          id: "1",
+          user_id: 1,
+          class_id: 1,
+          date: "06/19/20",
+          score: 90,
+          lessonName: "Reading"
+        }
+      ];
+
+      await db("sessions").insert(sessions);
+
+      let res = await request(server)
+        .post("/register")
+        .send({
+          id: "3",
+          firstname: "Matt",
+          lastname: "Smith",
+          username: "Msmith9",
+          password: "test",
+          email: "smith5w@gmail.com",
+          role: "admin"
+        });
+
+      let token = res.body.token;
+      let body1 = [
+        {
+          id: "1",
+          firstname: "Lisa",
+          lastname: "Jones",
+          email: "jones@gmail.com"
+        }
+      ];
+
+      const res1 = await request(server)
+        .get("/classes/1/users")
+        .set("authorization", `${token}`);
+
+      expect(res1.status).toBe(200);
+      expect(res1.body).toStrictEqual(body1);
     });
     it("finds users info by class id", async () => {
       const user = [
@@ -665,60 +820,6 @@ describe("getClassById", () => {
 
       expect(users[0].firstname).toEqual("Jon");
       expect(users).toHaveLength(2);
-    });
-
-    it("returns additional info for class and users", async () => {
-      const user = [
-        {
-          id: "1",
-          ref_id: 1,
-          firstname: "Jon",
-          lastname: "Smith",
-          username: "kSmith",
-          password: "test",
-          email: "Jsmith@gmail.com"
-        }
-      ];
-
-      await db("users").insert(user);
-
-      const classes = [
-        {
-          id: "1",
-          ref_id: 1,
-          name: "Ms. Angela's",
-          grade: "1st"
-        }
-      ];
-
-      await db("class").insert(classes);
-
-      const sessions = [
-        {
-          id: "1",
-          user_id: 1,
-          class_id: 1,
-          date: "",
-          score: "100",
-          lessonName: "Math"
-        }
-      ];
-
-      const body = [
-        {
-          id: "1",
-          firstname: "Jon",
-          lastname: "Smith",
-          email: "Jsmith@gmail.com"
-        }
-      ];
-
-      await db("sessions").insert(sessions);
-
-      const res = await request(server).get("/classes/1/users");
-      expect(res.status).toBe(200);
-      expect(res.body).toHaveLength(1);
-      expect(res.body).toStrictEqual(body);
     });
 
     it("returns empty array if no session stored", async () => {
