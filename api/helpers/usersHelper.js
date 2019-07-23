@@ -19,6 +19,7 @@ module.exports = {
 function getAllUsers() {
   return db("users").select(
     "id",
+    "ref_id",
     "firstname",
     "lastname",
     "username",
@@ -33,7 +34,7 @@ function getUserById(id) {
   return db("users")
     .where({ id })
     .first()
-    .select("id", "firstname", "lastname", "username", "email", "role");
+    .select("id", "ref_id", "firstname", "lastname", "username", "email", "role");
 }
 
 // GET user by FILTER
