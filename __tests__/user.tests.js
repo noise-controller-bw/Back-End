@@ -1,6 +1,5 @@
 const request = require('supertest');
 const server = require('../api/server.js');
-
 const db = require('../data/dbConfig.js');
 const Users = require('../api/helpers/usersHelper.js');
 
@@ -73,6 +72,8 @@ describe('GET /users', () => {
         expect(res2.status).toBe(200);
         expect(res2.body).toHaveLength(2);
     });
+
+   
 });
 
 // GET by Id

@@ -12,7 +12,6 @@ const router = require("express").Router();
 
 const { authenticate } = require("../../auth/authenticate.js");
 const { checkRole } = require("../../MiddleWare/checkRole.js");
-
 /*
 GET ROUTE
 TODO: Add middleware to ensure user is logged in
@@ -98,7 +97,7 @@ RETURNS class updated object
     grade: "1st" // not required
 }
 */
-router.put("/:id", async (req, res) => {
+router.put("/:id", authenticate, async (req, res) => {
   try {
     const updatedClasses = {
       id: req.params.id.toString(),
@@ -125,7 +124,6 @@ TODO: Add middleware to ensure user is logged in, Role verify required?
 ROUTE = '/classes/:id'
 
 */
-const t = "teacher";
 
 router.delete("/:id", authenticate, checkRole("admin"), async (req, res) => {
   try {
@@ -145,7 +143,7 @@ router.delete("/:id", authenticate, checkRole("admin"), async (req, res) => {
 });
 
 //CLASSES/ID/SESSIONS
-router.get("/:id/sessions", (req, res) => {
+router.get("/:id/sessions", authenticate, (req, res) => {
   getClassSession(req.params.id.toString())
     .then(sess => {
       if (sess) {
@@ -162,7 +160,7 @@ router.get("/:id/sessions", (req, res) => {
 });
 
 //CLASSES/ID/USERS
-router.get("/:id/users", (req, res) => {
+router.get("/:id/users", authenticate, (req, res) => {
   getClassUsers(req.params.id.toString())
     .then(users => {
       if (users) {
