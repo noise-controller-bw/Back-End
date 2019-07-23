@@ -74,6 +74,7 @@ describe("GET /classes", () => {
         .post("/register")
         .send({
           id: "1",
+          ref_id: 1,
           firstname: "Matt",
           lastname: "Smith",
           username: "Msmith9",
@@ -88,6 +89,7 @@ describe("GET /classes", () => {
     const testClass = [
       {
         id: "1",
+        ref_id: 1,
         name: "Ms. Angela's",
         grade: "1st"
       }
@@ -247,12 +249,14 @@ describe("getClassById", () => {
     it("should return the new class on insert (helper)", async () => {
       const newClass = await Classes.addClass({
         id: "1",
+        ref_id: 1,
         name: "Ms. Patty's",
         grade: "1st"
       });
 
       expect(newClass).toEqual({
         id: "1",
+        ref_id: 1,
         name: "Ms. Patty's",
         grade: "1st"
       });
