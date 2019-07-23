@@ -15,11 +15,11 @@
    - [Users](#Users)
         - [GET all users](#GET-all-users)
         - [GET user by id](#GET-user-by-id)
-        - [GET sessions by user id](#GET_sessions_by_user_id)
-        - [GET classes by user id](#GET_classes_by_user_id)
-        - [POST create new user](#POST_create_new_user)
-        - [DELETE /users/:id](#DeleteUser)
-        - [PUT /users/:id](#EditUser)
+        - [GET sessions by user id](#GET-sessions-by-user-id)
+        - [GET classes by user id](#GET-classes-by-user-id)
+        - [POST create user](#POST-create-user)
+        - [DELETE user](#DELETE-user)
+        - [PUT edit user](#PUT-edit-user)
    - [Sessions](#Sessions)
    - [Classes](#Classes)
 
@@ -185,7 +185,7 @@ Example:
 }
 ```
 
-### [POST] create new user
+### [POST] create user
 
 **URL:** `/users`
 
@@ -215,9 +215,44 @@ Example:
 }
 ```
 
-### [DELETE /users/:id] delete user
+### [DELETE] user
 
-### [PUT /users/:id] edit user information
+**URL:** `/users/:id`
+
+**Authorisation:** User must be an admin.
+
+**Returns:** (if successful) message and count of the records has beed deleted.
+
+Example:
+```js
+{
+    "message": "The user has been deleted",
+    "count": 1 
+}
+```
+
+### [PUT] edit user
+
+**URL:** /users/:id
+
+**Payload:** an object with the same values as for [register](#Register).
+
+**Returns:** (if successful) message and updated user object.
+
+```js
+{
+    "message": "The user has been updated",
+    "updatedUser": {
+        "id": "2c872254-feee-48ff-bda3-10041b8b56eb",
+        "firstname": "Alan",
+        "lastname": "Turing",
+        "username": "Enigma",
+        "password": "Super%Password",
+        "email": "turing@email.me",
+        "role": "admin"
+    }
+}
+```
 
 ## Sessions
 
