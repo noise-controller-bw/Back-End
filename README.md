@@ -318,19 +318,61 @@ Example:
 }
 ```
 
-**Returns:** a newely created session object with id
+**Returns:** message and a newely created session object with id
 
 Example:
 ```js
 {
-    
+    "message": "sessions was added succesfully",
+    "inserted": [
+        {
+            "id": "a0a15399-523b-4fd8-b883-fb03f1cbc2bf",
+            "firstname": "Alan", // first name of the user which has created the session
+            "lastname": "Turing", // last name of the user which has created the session
+            "date": "03/07/2019",
+            "lessonName": "Math",
+            "className": "Ms. Angela's",
+            "grade": "1st",
+            "score": 80
+        }
+    ]
 }
 ```
 
 ### [DELETE] session
 
+**URL:** `/sessions/:id`
+
+**Returns:** (if successful) message and count of the records has beed deleted.
+
+Example:
+```js
+{
+    "message": "The session has been deleted",
+    "count": 1
+}
+```
+
 ### [PUT] edit session
 
+**URL:** /sessions/:id
+
+**Payload:** an object with the same values as for [create session](#POST-create-session).
+
+**Returns:** (if successful) message and updated user object.
+
+```js
+{
+    "message": "The session has been updated",
+    "updatedSessions": {
+        "id": "a0a15399-523b-4fd8-b883-fb03f1cbc2bf",
+        "user_id": 9,
+        "class_id": 1,
+        "date": "03/07/2019",
+        "score": 100,
+        "lessonName": "Math"
+}
+```
 
 ## Classes
 
