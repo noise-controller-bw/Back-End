@@ -250,7 +250,6 @@ Example:
         "password": "Super%Password",
         "email": "turing@email.me",
         "role": "admin"
-    }
 }
 ```
 
