@@ -533,6 +533,7 @@ describe('addUser', () => {
     it('should return the new user on insert', async () => {
         const user = await Users.addUser({ 
             id: "1",
+            ref_id: 1,
             firstname: "Lisa",
             lastname: "Jones",
             username: "lijones",
@@ -543,6 +544,7 @@ describe('addUser', () => {
 
         expect(user).toEqual({ 
             id: "1",
+            ref_id: 1,
             firstname: "Lisa",
             lastname: "Jones",
             username: "lijones",

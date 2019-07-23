@@ -21,7 +21,13 @@
         - [DELETE user](#DELETE-user)
         - [PUT edit user](#PUT-edit-user)
    - [Sessions](#Sessions)
+        - [GET all sessions](#GET-all-sessions)
+        - [GET session by id](#GET-session-by-id)
+        - [POST create session](#POST-create-session)
+        - [DELETE session](#DELETE-session)
+        - [PUT edit session](#PUT-edit-session)
    - [Classes](#Classes)
+   - [Themes](#Themes)
 
 # DESCRIPTION
 
@@ -72,7 +78,8 @@ Example:
 ```js
 {
     "user": {
-        "id": "774a744d-6cb3-4a41-b45d-0ef94b9d2af7",
+        "id": "774a744d-6cb3-4a41-b45d-0ef94b9d2af7", // string, for routing
+        "ref_id": 4, // integer, for referencing user in sessions
         "firstname": "Alan",
         "lastname": "Turing",
         "username": "Enigma",
@@ -104,7 +111,8 @@ Example:
     "message": "Welcome Enigma!",
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoiNGRhYTFhMmYtMDdhNi00NWQ0LTkxMWQtYzQyNjJlNmM1NmZmIiwidXNlcm5hbWUiOiJFbmlnbWEiLCJyb2xlcyI6InRlYWNoZXIiLCJpYXQiOjE1NjMzMjI2MDksImV4cCI6MTU2MzQwOTAwOX0.hqB2hZ9HJjEiwbZpZXYfPTgDmjAfzE2MpJFLJlVKeJM",
     "user": {
-        "id": "4daa1a2f-07a6-45d4-911d-c4262e6c56ff",
+        "id": "4daa1a2f-07a6-45d4-911d-c4262e6c56ff", // string, for routing
+        "ref_id": 4, //integer, for referencing user in sessions
         "firstname": "Alan",
         "lastname": "Turing",
         "username": "Enigma",
@@ -118,14 +126,15 @@ Example:
 
 ### [GET] all users
 
-**URL:** /users
+**URL:** `/users`
 
 **Returns:** an array of user objects
 
 Example:
 ```js
 {
-    "id": "1",
+    "id": "1", // string, for routing
+    "ref_id": 1, // integer, for referencing user in sessions
     "firstname": "Kasia",
     "lastname": "Bondarava",
     "username": "kbondarava",
@@ -136,14 +145,15 @@ Example:
 
 ### [GET] user by id
 
-**URL:** /users/:id
+**URL:** `/users/:id`
 
 **Returns:** a user object
 
 Example:
 ```js
 {
-    "id": "2",
+    "id": "2", // string, for routing
+    "ref_id": 2, // integer, for referencing user in sessions
     "firstname": "Levi",
     "lastname": "Simpson",
     "username": "levisimpson",
@@ -154,7 +164,7 @@ Example:
 
 ### [GET] sessions by user id
 
-**URL:**  /users/:id/sessions
+**URL:** `/users/:id/sessions`
 
 **Returns:** an array of session objects for particular user
 
@@ -172,7 +182,7 @@ Example:
 
 ### [GET] classes by user id
 
-**URL:**  /users/:id/classes
+**URL:** `/users/:id/classes`
 
 **Returns:** an array of session objects for particular user
 
@@ -206,7 +216,8 @@ Example:
 Example:
 ```js
 {
-    "id": "350a9aeb-3545-42f4-892b-791d51fc9e0a",
+    "id": "350a9aeb-3545-42f4-892b-791d51fc9e0a", // string, for routing
+    "ref_id": 4, // integer, for referencing user in sessions
     "firstname": "Alan",
     "lastname": "Turing",
     "username": "Enigma",
@@ -233,7 +244,7 @@ Example:
 
 ### [PUT] edit user
 
-**URL:** /users/:id
+**URL:** `/users/:id`
 
 **Payload:** an object with the same values as for [register](#Register).
 
@@ -243,7 +254,8 @@ Example:
 {
     "message": "The user has been updated",
     "updatedUser": {
-        "id": "2c872254-feee-48ff-bda3-10041b8b56eb",
+        "id": "2c872254-feee-48ff-bda3-10041b8b56eb", // string, for routing
+        "ref_id": 4, // integer, for referencing user in sessions
         "firstname": "Alan",
         "lastname": "Turing",
         "username": "Enigma",
@@ -255,4 +267,113 @@ Example:
 
 ## Sessions
 
+### [GET] all sessions
+
+**URL:** `/sessions`
+
+**Returns:** an array of sessions objects
+
+Example:
+```js
+{
+    "id": "1",
+    "date": "03/07/2019",
+    "score": 100,
+    "lessonName": "Math" // subject
+}
+```
+
+### [GET] session by id
+
+**URL:** `/sessions/:id`
+
+**Returns:** a session object
+
+Example:
+```js
+{
+    "id": "1",
+    "firstname": "Kasia", // first name of the user which has created the session
+    "lastname": "Bondarava", // last name of the user which has created the session
+    "date": "03/07/2019",
+    "lessonName": "Math", // subject
+    "className": "Ms. Angela's",
+    "grade": "1st",
+    "score": 100
+}
+```
+
+### [POST] create session
+
+**URL:** `/sessions`
+
+**Payload:**
+```js
+{
+    "user_id": 1, // === integer, ref_id of the user
+    "class_id": 1, // === integer, ref_id of the class
+    "date": "03/07/2019",
+    "score": 0,
+    "lessonName": "Math" // optional
+}
+```
+
+**Returns:** message and a newely created session object with id
+
+Example:
+```js
+{
+    "message": "sessions was added succesfully",
+    "inserted": [
+        {
+            "id": "a0a15399-523b-4fd8-b883-fb03f1cbc2bf",
+            "firstname": "Alan", // first name of the user which has created the session
+            "lastname": "Turing", // last name of the user which has created the session
+            "date": "03/07/2019",
+            "lessonName": "Math",
+            "className": "Ms. Angela's",
+            "grade": "1st",
+            "score": 80
+        }
+    ]
+}
+```
+
+### [DELETE] session
+
+**URL:** `/sessions/:id`
+
+**Returns:** (if successful) message and count of the records has beed deleted.
+
+Example:
+```js
+{
+    "message": "The session has been deleted",
+    "count": 1
+}
+```
+
+### [PUT] edit session
+
+**URL:** `/sessions/:id`
+
+**Payload:** an object with the same values as for [create session](#POST-create-session).
+
+**Returns:** (if successful) message and updated user object.
+
+```js
+{
+    "message": "The session has been updated",
+    "updatedSessions": {
+        "id": "a0a15399-523b-4fd8-b883-fb03f1cbc2bf",
+        "user_id": 9,
+        "class_id": 1,
+        "date": "03/07/2019",
+        "score": 100,
+        "lessonName": "Math"
+}
+```
+
 ## Classes
+
+## Themes
