@@ -8,6 +8,9 @@ const { addUser, getUserByFilter } = require("../helpers");
 // responds with saved user object and a token
 router.post("/register", (req, res) => {
   let user = req.body;
+
+
+  // HASH PW BEFORE SAVING TO DB
   const hash = bcrypt.hashSync(user.password, 10);
   user.password = hash;
   if (
@@ -28,6 +31,8 @@ router.post("/register", (req, res) => {
         let { id, firstname, lastname, username, email, role } = saved;
         const myUser = { id, firstname, lastname, username, email, role };
 
+        // we want to have an option to access restricted routes right after registration
+        //SEND BACK TOKEN TO CLIENT AFTER REGISTRATION SUCCESSFUL
         res.status(201).json({ user: myUser, token });
       })
       .catch(error => {
@@ -36,8 +41,7 @@ router.post("/register", (req, res) => {
   }
 });
 
-//Todo: Add authenticate mw to ensure user is authenticated
-// responds with user object, token and welcoming message
+//VERIFY PW USING BCRYPT
 router.post("/login", (req, res) => {
   let { username, password } = req.body;
   if (!username || !password) {
@@ -46,13 +50,24 @@ router.post("/login", (req, res) => {
     getUserByFilter({ username })
       .first()
       .then(user => {
+
+        //GET THE HASHED PW SAVED FOR THIS USER FROM OUR DB (getUserByFilter)
+
+        //COMPARE GIVEN PW & BCRYPT HASHED PW SAVED IN DB
         if (user && bcrypt.compareSync(password, user.password)) {
+
+          //IF BCYRPT HASHED PW & GIVNEN PW ARE == EQUAL
+          //GENERATE A TOKEN WITH HEADER, PAYLOAD & SIGNATURE
           const token = generateToken(user);
 
           // we don't want to send back to user some info like hashed password or ref_id which we're using only internally
           let { id, firstname, lastname, username, email, role } = user;
           const myUser = { id, firstname, lastname, username, email, role };
 
+
+          //RETURN TOKEN TO CLIENT FOR USE IN CLIENT REQUEST HEADERS
+          //CLIENT CAN STORE THIS TOKEN IN LOCAL STORAGE TO USE IN SESSIONS/PERSIST AUTH INFO ACROSS REQUESTS
+          //CAN REMOVE TOKEN FROM LOCAL STORAGE AFTER LOG-OUT          
           res.status(200).json({
             message: `Welcome ${username}!`,
             token,
